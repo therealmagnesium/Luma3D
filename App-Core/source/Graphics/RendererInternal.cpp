@@ -1,4 +1,5 @@
 #include "Graphics/RendererInternal.h"
+#include "Core/Log.h"
 #include <glad/glad.h>
 
 namespace Graphics
@@ -6,10 +7,9 @@ namespace Graphics
     VertexArray CreateVertexArray()
     {
         VertexArray vao;
-        if (!vao.isInitialized)
-            glGenVertexArrays(1, &vao.id);
-
+        glGenVertexArrays(1, &vao.id);
         vao.isInitialized = true;
+
         return vao;
     }
 
@@ -40,10 +40,9 @@ namespace Graphics
     VertexBuffer CreateVertexBuffer()
     {
         VertexBuffer vbo;
-        if (!vbo.isInitialized)
-            glGenBuffers(1, &vbo.id);
-
+        glGenBuffers(1, &vbo.id);
         vbo.isInitialized = true;
+
         return vbo;
     }
 
@@ -71,10 +70,9 @@ namespace Graphics
     IndexBuffer CreateIndexBuffer()
     {
         IndexBuffer ebo;
-        if (!ebo.isInitialized)
-            glGenBuffers(1, &ebo.id);
-
+        glGenBuffers(1, &ebo.id);
         ebo.isInitialized = true;
+
         return ebo;
     }
 

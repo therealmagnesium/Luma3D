@@ -7,7 +7,7 @@ namespace Core
 {
     TimeState Time;
 
-    void InitTimeState(u32 frameRate)
+    void TimeStateInit(u32 frameRate)
     {
         Time.frameRate = frameRate;
         Time.frameDelay = 1000.f / frameRate;

@@ -19,7 +19,7 @@ namespace Core
 
     extern TimeState Time;
 
-    void InitTimeState(u32 frameRate);
+    void TimeStateInit(u32 frameRate);
     void UpdateTime();
     void UpdateTimeLate();
 }

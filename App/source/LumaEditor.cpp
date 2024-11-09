@@ -26,7 +26,6 @@ LumaEditor::LumaEditor(const ApplicationSpecification& appInfo) : Application(ap
 
     u32 indices[6] = {0, 1, 2, 2, 3, 0};
 
-    m_shader = Renderer.GetDefaultShader();
     m_mesh = LoadMesh(vertices, LEN(vertices), indices, LEN(indices));
     LogMeshInfo(m_mesh);
 }
@@ -34,7 +33,6 @@ LumaEditor::LumaEditor(const ApplicationSpecification& appInfo) : Application(ap
 void LumaEditor::OnShutdown()
 {
     UnloadMesh(m_mesh);
-    UnloadShader(m_shader);
 }
 
 void LumaEditor::OnUpdate()
@@ -43,5 +41,5 @@ void LumaEditor::OnUpdate()
 
 void LumaEditor::OnRender()
 {
-    Renderer.DrawMesh(m_mesh, m_shader);
+    Renderer.DrawMesh(m_mesh, Renderer.defaultShader);
 }

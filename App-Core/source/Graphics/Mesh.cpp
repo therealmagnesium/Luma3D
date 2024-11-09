@@ -36,6 +36,7 @@ namespace Graphics
         mesh.vertexArray.StoreInAtrribList(1, 3, offsetof(Vertex, color));
 
         mesh.vertexBuffer.Unbind();
+        mesh.indexBuffer.Unbind();
         mesh.vertexArray.Unbind();
 
         return mesh;
@@ -47,6 +48,8 @@ namespace Graphics
         INFO("Mesh vertex count : %d", mesh.vertexCount);
         INFO("Mesh index count  : %d", mesh.indices.size());
         INFO("Mesh VAO ID       : %d", mesh.vertexArray.id);
+        INFO("Mesh VBO ID       : %d", mesh.vertexBuffer.id);
+        INFO("Mesh EBO ID       : %d", mesh.indexBuffer.id);
     }
 
     void UnloadMesh(Mesh& mesh)

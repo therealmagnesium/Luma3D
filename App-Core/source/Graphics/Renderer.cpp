@@ -10,7 +10,7 @@ namespace Graphics
     RenderState Renderer;
     bool isInitialized = false;
 
-    void RenderState::Init()
+    void RendererInit()
     {
         if (isInitialized)
         {
@@ -20,17 +20,31 @@ namespace Graphics
 
         const char* vertPath = "assets/shaders/Default_vs.glsl";
         const char* fragPath = "assets/shaders/Default_fs.glsl";
-        Renderer.m_defaultShader = LoadShader(vertPath, fragPath);
+        Renderer.defaultShader = LoadShader(vertPath, fragPath);
 
         // TODO: Set projection matrix
 
         isInitialized = true;
     }
 
+    void RendererShutdown()
+    {
+        if (!isInitialized)
+        {
+            ERROR("Cannot shutdown renderer because it's not initialized!");
+            return;
+        }
+
+        INFO("Shutting down the renderer...");
+        UnloadShader(Renderer.defaultShader);
+
+        isInitialized = false;
+    }
+
     void RenderState::ClearContext(const glm::vec4& color)
     {
-        m_clearColor = color;
-        glClearColor(V4_OPEN(m_clearColor));
+        clearColor = color;
+        glClearColor(V4_OPEN(clearColor));
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
@@ -38,6 +52,7 @@ namespace Graphics
     {
         shader.Bind();
         mesh.vertexArray.Bind();
+        mesh.indexBuffer.Bind();
 
         glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, NULL);
 

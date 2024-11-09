@@ -6,23 +6,18 @@
 
 namespace Graphics
 {
-    class RenderState
+    struct RenderState
     {
-    public:
-        RenderState() = default;
+        Shader defaultShader;
+        glm::vec4 clearColor;
+        glm::mat4 projection;
 
-        static void Init();
         void ClearContext(const glm::vec4& color);
         void DrawMesh(Mesh& mesh, Shader& shader);
-
-        inline Shader& GetDefaultShader() { return m_defaultShader; }
-        inline glm::mat4& GetProjection() { return m_projection; }
-
-    private:
-        Shader m_defaultShader;
-        glm::vec4 m_clearColor;
-        glm::mat4 m_projection;
     };
 
     extern RenderState Renderer;
+
+    void RendererInit();
+    void RendererShutdown();
 }

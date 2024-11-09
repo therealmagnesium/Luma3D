@@ -26,8 +26,8 @@ namespace Core
 
         m_window = Graphics::CreateWindow(m_specification.windowWidth, m_specification.windowHeight,
                                           m_specification.name.c_str());
-        Graphics::Renderer.Init();
-        InitTimeState(60);
+        TimeStateInit(60);
+        Graphics::RendererInit();
 
         initialized = true;
         INFO("Successfully initialized the core application!");
@@ -35,7 +35,9 @@ namespace Core
 
     Application::~Application()
     {
+        Graphics::RendererShutdown();
         Graphics::DestroyWindow(m_window);
+        INFO("Successfully shutdown the core application!");
     }
 
     void Application::Run()
