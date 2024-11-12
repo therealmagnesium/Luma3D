@@ -31,7 +31,7 @@ namespace Core
     public:
         /*
          * @brief Creates a new application, given the information to create it.
-         * @param[in] appInfo - The specifications on how to create the application.
+         * @param appInfo - The specifications on how to create the application.
          * */
         Application(const ApplicationSpecification& appInfo);
 

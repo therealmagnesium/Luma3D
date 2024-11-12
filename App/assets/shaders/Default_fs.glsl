@@ -3,8 +3,13 @@ out vec4 finalColor;
 
 in vec3 fragPosition;
 in vec3 fragColor;
+in vec2 fragUVCoords;
+
+uniform sampler2D texture0;
+uniform sampler2D texture1;
 
 void main()
 {
-    finalColor = vec4(fragColor + vec3(0.3f), 1.f);
+    vec3 texelColor = texture(texture1, fragUVCoords).xyz;
+    finalColor = vec4(texelColor * fragColor, 1.f);
 }

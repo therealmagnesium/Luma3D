@@ -1,6 +1,7 @@
 #include "Graphics/Renderer.h"
 #include "Core/Log.h"
 #include "Graphics/Shader.h"
+#include "Graphics/Texture.h"
 
 #include <glm/glm.hpp>
 #include <glad/glad.h>
@@ -8,7 +9,8 @@
 namespace Graphics
 {
     RenderState Renderer;
-    bool isInitialized = false;
+
+    static bool isInitialized = false;
 
     void RendererInit()
     {
@@ -21,6 +23,19 @@ namespace Graphics
         const char* vertPath = "assets/shaders/Default_vs.glsl";
         const char* fragPath = "assets/shaders/Default_fs.glsl";
         Renderer.defaultShader = LoadShader(vertPath, fragPath);
+
+        Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_DIFFUSE] =
+            GetUniformLocation(Renderer.defaultShader, "texture0");
+
+        Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_SPECULAR] =
+            GetUniformLocation(Renderer.defaultShader, "texture1");
+
+        Renderer.defaultShader.Bind();
+        Renderer.defaultShader.SetInt(Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_DIFFUSE], 0);
+        Renderer.defaultShader.SetInt(Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_SPECULAR], 1);
+        Renderer.defaultShader.Unbind();
+
+        TextureFormatsInit();
 
         // TODO: Set projection matrix
 

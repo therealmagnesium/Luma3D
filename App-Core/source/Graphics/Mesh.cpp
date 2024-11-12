@@ -34,6 +34,7 @@ namespace Graphics
 
         mesh.vertexArray.StoreInAtrribList(0, 3, offsetof(Vertex, position));
         mesh.vertexArray.StoreInAtrribList(1, 3, offsetof(Vertex, color));
+        mesh.vertexArray.StoreInAtrribList(2, 2, offsetof(Vertex, uvCoords));
 
         mesh.vertexBuffer.Unbind();
         mesh.indexBuffer.Unbind();
