@@ -36,9 +36,11 @@ namespace Graphics
 
         SetupSDL();
 
-        s32 flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
-        window.handle = SDL_CreateWindow(window.title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                         window.width, window.height, flags);
+        s32 flags =
+            SDL_WINDOW_RESIZABLE | SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI;
+        window.handle =
+            SDL_CreateWindow(window.title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                             window.width, window.height, flags);
         if (window.handle == NULL)
         {
             FATAL("Failed to create window!");
@@ -83,6 +85,11 @@ namespace Graphics
                 case SDL_QUIT:
                     INFO("Exiting out of application...");
                     Core::App->Quit();
+                    break;
+
+                case SDL_MOUSEMOTION:
+                    Core::Input.mouse.position.x = event.motion.x;
+                    Core::Input.mouse.position.y = event.motion.y;
                     break;
 
                 case SDL_MOUSEBUTTONDOWN:

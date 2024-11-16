@@ -111,9 +111,9 @@ namespace Graphics
     s32 GetUniformLocation(const Shader& shader, const char* name)
     {
         s32 location = glGetUniformLocation(shader.id, name);
-
-        if (location == -1)
-            WARN("Could not find uniform location for %s", name);
+        /*
+                if (location == -1)
+                    WARN("Could not find uniform location for %s", name); */
 
         return location;
     }

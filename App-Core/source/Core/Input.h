@@ -6,17 +6,17 @@
 
 namespace Core
 {
-    // @brief Determines what keys return -1 and 1.
+    // [@brief] Determines what keys return -1 and 1.
     enum InputAxis
     {
         INPUT_AXIS_HORIZONTAL = 0,
         INPUT_AXIS_VERTICAL,
     };
 
-    /* @brief Holds input information about the mouse.
-     * @field position - The position of the cursor in mouse coordinates.
-     * @field buttonsHeld - The mouse buttons that are being held down.
-     * @field buttonsClicked - The mouse buttons that are clicked.
+    /* [@brief] Holds input information about the mouse.
+     * [@field] position - The position of the cursor in mouse coordinates.
+     * [@field] buttonsHeld - The mouse buttons that are being held down.
+     * [@field] buttonsClicked - The mouse buttons that are clicked.
      * */
     struct InputMouseState
     {
@@ -25,9 +25,9 @@ namespace Core
         bool buttonsClicked[MOUSE_BUTTON_COUNT];
     };
 
-    /* @brief Holds input information about the keyboard.
-     * @field keysHeld - The mouse buttons that are being held down.
-     * @field keysPressed - The mouse buttons that are clicked.
+    /* [@brief] Holds input information about the keyboard.
+     * [@field] keysHeld - The mouse buttons that are being held down.
+     * [@field] keysPressed - The mouse buttons that are clicked.
      * */
     struct InputKeyboardState
     {
@@ -35,9 +35,9 @@ namespace Core
         bool keysPressed[KEY_COUNT];
     };
 
-    /* @brief Holds all of the input information about the mouse and keyboard.
-     * @field mouse - The input information about the mouse.
-     * @field keyboard - The input information about the keyboard.
+    /* [@brief] Holds all of the input information about the mouse and keyboard.
+     * [@field] mouse - The input information about the mouse.
+     * [@field] keyboard - The input information about the keyboard.
      * */
     struct InputState
     {

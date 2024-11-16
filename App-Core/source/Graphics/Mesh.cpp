@@ -46,7 +46,7 @@ namespace Graphics
     void LogMeshInfo(const Mesh& mesh)
     {
         INFO("=======Mesh info=======");
-        INFO("Mesh vertex count : %d", mesh.vertexCount);
+        INFO("Mesh vertex count : %d", mesh.vertices.size());
         INFO("Mesh index count  : %d", mesh.indices.size());
         INFO("Mesh VAO ID       : %d", mesh.vertexArray.id);
         INFO("Mesh VBO ID       : %d", mesh.vertexBuffer.id);

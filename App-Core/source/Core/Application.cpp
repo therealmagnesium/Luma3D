@@ -31,6 +31,9 @@ namespace Core
 
         initialized = true;
         INFO("Successfully initialized the core application!");
+        INFO("GPU vendor - %s", glGetString(GL_VENDOR));
+        INFO("Renderer - %s", glGetString(GL_RENDERER));
+        INFO("OpenGL version - %s", glGetString(GL_VERSION));
     }
 
     Application::~Application()
@@ -42,18 +45,24 @@ namespace Core
 
     void Application::Run()
     {
+        this->OnCreate();
+        if (Graphics::Renderer.primaryCamera == NULL)
+        {
+            FATAL("Cannot run application because no primary camera is set!");
+            this->Quit();
+        }
+
         while (m_isRunning)
         {
             Graphics::HandleWindowEvents(m_window);
             this->OnUpdate();
 
-            Graphics::Renderer.ClearContext(glm::vec4(0.08f, 0.1f, 0.12f, 1.f));
+            Graphics::RendererBegin();
 
             this->OnRender();
             this->OnRenderUI();
 
-            SDL_GL_SwapWindow(m_window.handle);
-            UpdateTimeLate();
+            Graphics::RendererEnd();
         }
 
         this->OnShutdown();

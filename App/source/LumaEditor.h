@@ -2,8 +2,10 @@
 #include <Core/Application.h>
 #include <Core/Base.h>
 
+#include <Graphics/Camera.h>
 #include <Graphics/Mesh.h>
 #include <Graphics/Shader.h>
+#include <Graphics/RendererInternal.h>
 #include <Graphics/Texture.h>
 
 using namespace Core;
@@ -12,14 +14,15 @@ using namespace Graphics;
 class LumaEditor : public Application
 {
 public:
-    LumaEditor(const ApplicationSpecification& appInfo);
+    LumaEditor(const ApplicationSpecification& appInfo) : Application(appInfo) {}
 
+    void OnCreate() override;
     void OnUpdate() override;
     void OnRender() override;
     void OnShutdown() override;
 
 private:
+    Camera m_camera;
     Texture m_texture;
-    Texture m_texture2;
     Mesh m_mesh;
 };
