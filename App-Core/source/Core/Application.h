@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Base.h"
 #include "Graphics/Window.h"
+
 #include <string>
 
 namespace Core

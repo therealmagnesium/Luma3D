@@ -132,8 +132,8 @@ namespace Graphics
         INFO("Target: " V3_FMT, V3_OPEN(camera.target));
         INFO("Direction: " V3_FMT, V3_OPEN(camera.direction));
         INFO("Up: " V3_FMT, V3_OPEN(camera.up));
-        INFO("Fov: %f", camera.fov);
-        INFO("Move speed: %f", camera.moveSpeed);
+        INFO("Fov: %.2f", camera.fov);
+        INFO("Move speed: %.2f", camera.moveSpeed);
         INFO("Is locked: %d", camera.isLocked);
     }
 

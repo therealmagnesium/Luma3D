@@ -3,6 +3,7 @@
 
 #include "Graphics/Camera.h"
 #include "Graphics/Mesh.h"
+#include "Graphics/Model.h"
 #include "Graphics/Shader.h"
 
 #include <glm/glm.hpp>
@@ -17,7 +18,8 @@ namespace Graphics
         Camera* primaryCamera = NULL;
 
         void ClearContext(const glm::vec4& color);
-        void DrawMesh(Mesh& mesh, Shader& shader);
+        void DrawMesh(Mesh& mesh, Shader& shader, Material& material);
+        void DrawModel(Model& model, Shader& shader);
     };
 
     extern RenderState Renderer;

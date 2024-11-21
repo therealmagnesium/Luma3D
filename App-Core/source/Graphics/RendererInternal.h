@@ -9,6 +9,7 @@ namespace Graphics
         glm::vec3 position;
         glm::vec3 color;
         glm::vec2 uvCoords;
+        glm::vec3 normal;
     };
 
     struct VertexArray

@@ -31,7 +31,8 @@ namespace Graphics
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         stbi_set_flip_vertically_on_load(true);
-        texture.data = stbi_load(path, (s32*)&texture.width, (s32*)&texture.height, (s32*)&texture.channelCount, 0);
+        texture.data = stbi_load(path, (s32*)&texture.width, (s32*)&texture.height,
+                                 (s32*)&texture.channelCount, 0);
         if (texture.data == NULL)
         {
             WARN("Failed to load texture %s!", path);
@@ -39,8 +40,8 @@ namespace Graphics
         }
 
         u32 glFormat = textureFormatMap[format];
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture.width, texture.height, 0, glFormat, GL_UNSIGNED_BYTE,
-                     texture.data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture.width, texture.height, 0, glFormat,
+                     GL_UNSIGNED_BYTE, texture.data);
         glGenerateMipmap(GL_TEXTURE_2D);
         texture.isValid = true;
 
@@ -54,20 +55,17 @@ namespace Graphics
     {
         INFO("Unloading texture %s...", texture.path.c_str());
 
-        if (texture.data != NULL)
+        if (texture.data != NULL && texture.isValid)
             stbi_image_free(texture.data);
     }
 
     void Texture::Bind(u8 slot)
     {
-        if (!isValid)
+        if (isValid)
         {
-            WARN("Invalid texture for slot %d!", slot);
-            return;
+            glActiveTexture(GL_TEXTURE0 + slot);
+            glBindTexture(GL_TEXTURE_2D, id);
         }
-
-        glBindTexture(GL_TEXTURE_2D, id);
-        glActiveTexture(GL_TEXTURE0 + slot);
     }
 
     void Texture::Unbind()

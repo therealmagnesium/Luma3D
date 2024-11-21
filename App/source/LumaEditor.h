@@ -4,6 +4,7 @@
 
 #include <Graphics/Camera.h>
 #include <Graphics/Mesh.h>
+#include <Graphics/Model.h>
 #include <Graphics/Shader.h>
 #include <Graphics/RendererInternal.h>
 #include <Graphics/Texture.h>
@@ -25,4 +26,5 @@ private:
     Camera m_camera;
     Texture m_texture;
     Mesh m_mesh;
+    Model m_model;
 };

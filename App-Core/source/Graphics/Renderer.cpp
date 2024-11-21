@@ -30,11 +30,11 @@ namespace Graphics
         const char* fragPath = "assets/shaders/Default_fs.glsl";
         Renderer.defaultShader = LoadShader(vertPath, fragPath);
 
-        Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_DIFFUSE] =
-            GetUniformLocation(Renderer.defaultShader, "texture0");
+        Renderer.defaultShader.uniformLocs[SHADER_LOC_COLOR_DIFFUSE] =
+            GetUniformLocation(Renderer.defaultShader, "material.diffuse");
 
-        Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_SPECULAR] =
-            GetUniformLocation(Renderer.defaultShader, "texture1");
+        Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_DIFFUSE] =
+            GetUniformLocation(Renderer.defaultShader, "material.diffuseMap");
 
         Renderer.defaultShader.uniformLocs[SHADER_LOC_MATRIX_MODEL] =
             GetUniformLocation(Renderer.defaultShader, "model");
@@ -50,12 +50,10 @@ namespace Graphics
         Renderer.defaultShader.SetInt(Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_DIFFUSE],
                                       SHADER_LOC_MAP_DIFFUSE);
 
-        Renderer.defaultShader.SetInt(Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_SPECULAR],
-                                      SHADER_LOC_MAP_SPECULAR);
-
         Renderer.defaultShader.Unbind();
 
         TextureFormatsInit();
+        glEnable(GL_DEPTH_TEST);
 
         isInitialized = true;
     }
@@ -79,6 +77,7 @@ namespace Graphics
         Renderer.clearColor = glm::vec4(0.08f, 0.1f, 0.12f, 1.f);
         Renderer.ClearContext(Renderer.clearColor);
     }
+
     void RendererEnd()
     {
         Window& window = Core::App->GetWindow();
@@ -96,22 +95,26 @@ namespace Graphics
         clearColor = color;
         glClearColor(V4_OPEN(clearColor));
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    }
 
-    void RenderState::DrawMesh(Mesh& mesh, Shader& shader)
-    {
         Window& window = Core::App->GetWindow();
         float aspectRatio = (float)window.width / (float)window.height;
         Renderer.projection = glm::perspective(glm::radians(45.f), aspectRatio, 0.1f, 1000.f);
+    }
 
+    void RenderState::DrawMesh(Mesh& mesh, Shader& shader, Material& material)
+    {
         shader.Bind();
 
-        Renderer.defaultShader.SetMat4(Renderer.defaultShader.uniformLocs[SHADER_LOC_MATRIX_VIEW],
-                                       glm::value_ptr(Renderer.primaryCamera->view));
+        material.diffuseMap.Bind(0);
 
-        Renderer.defaultShader.SetMat4(
-            Renderer.defaultShader.uniformLocs[SHADER_LOC_MATRIX_PROJECTION],
-            glm::value_ptr(Renderer.projection));
+        shader.SetVec3(shader.uniformLocs[SHADER_LOC_COLOR_DIFFUSE],
+                       glm::value_ptr(material.diffuse));
+
+        shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_VIEW],
+                       glm::value_ptr(Renderer.primaryCamera->view));
+
+        shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_PROJECTION],
+                       glm::value_ptr(Renderer.projection));
 
         mesh.vertexArray.Bind();
         mesh.indexBuffer.Bind();
@@ -120,6 +123,20 @@ namespace Graphics
 
         mesh.indexBuffer.Unbind();
         mesh.vertexArray.Unbind();
+
         shader.Unbind();
+    }
+
+    void RenderState::DrawModel(Model& model, Shader& shader)
+    {
+        shader.Bind();
+
+        shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_MODEL],
+                       glm::value_ptr(model.transform));
+
+        shader.Unbind();
+
+        for (u32 i = 0; i < model.meshes.size(); i++)
+            this->DrawMesh(model.meshes[i], shader, model.materials[model.meshes[i].materialIndex]);
     }
 }

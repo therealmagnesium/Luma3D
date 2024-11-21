@@ -8,21 +8,23 @@
 
 namespace Graphics
 {
-    Mesh LoadMesh(Vertex* vertices, u32 vertexCount, u32* indices, u32 indexCount)
+    Mesh LoadMesh(Vertex* vertices, u32 vertexCount, u32* indices, u32 indexCount,
+                  u32 materialIndex)
     {
         Mesh mesh;
         mesh.vertexArray = CreateVertexArray();
         mesh.vertexBuffer = CreateVertexBuffer();
         mesh.indexBuffer = CreateIndexBuffer();
-        mesh.vertexCount = vertexCount;
         mesh.vertices.resize(vertexCount);
         mesh.indices.resize(indexCount);
 
-        for (int i = 0; i < mesh.vertices.size(); i++)
+        for (u32 i = 0; i < mesh.vertices.size(); i++)
             mesh.vertices[i] = vertices[i];
 
-        for (int i = 0; i < mesh.indices.size(); i++)
+        for (u32 i = 0; i < mesh.indices.size(); i++)
             mesh.indices[i] = indices[i];
+
+        mesh.materialIndex = materialIndex;
 
         mesh.vertexArray.Bind();
 
@@ -35,6 +37,7 @@ namespace Graphics
         mesh.vertexArray.StoreInAtrribList(0, 3, offsetof(Vertex, position));
         mesh.vertexArray.StoreInAtrribList(1, 3, offsetof(Vertex, color));
         mesh.vertexArray.StoreInAtrribList(2, 2, offsetof(Vertex, uvCoords));
+        mesh.vertexArray.StoreInAtrribList(3, 3, offsetof(Vertex, normal));
 
         mesh.vertexBuffer.Unbind();
         mesh.indexBuffer.Unbind();
