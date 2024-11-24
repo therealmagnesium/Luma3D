@@ -12,7 +12,15 @@ struct Material
     sampler2D diffuseMap;
 };
 
+struct DirectionalLight
+{
+    float intensity;
+    vec3 color;
+    vec3 direction;
+};
+
 uniform Material material;
+uniform DirectionalLight directionalLight;
 
 vec3 GetObjectColor()
 {
@@ -25,8 +33,19 @@ vec3 GetObjectColor()
 
 }
 
+vec3 CalculateDiffuse(vec3 normal)
+{
+    vec3 lightDirection = normalize(-directionalLight.direction);
+    float diffuseFactor = max(dot(normal, lightDirection), 0.f);
+    return diffuseFactor * directionalLight.color * directionalLight.intensity;
+}
+
 void main()
 {
+    vec3 normal = normalize(fragNormal);
     vec3 objectColor = GetObjectColor();
-    finalColor = vec4(objectColor, 1.f);
+    vec3 diffuse = CalculateDiffuse(normal);
+    vec3 result = objectColor * (0.3f + diffuse);
+
+    finalColor = vec4(result, 1.f);
 }

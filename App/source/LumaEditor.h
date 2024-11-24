@@ -3,6 +3,7 @@
 #include <Core/Base.h>
 
 #include <Graphics/Camera.h>
+#include <Graphics/Light.h>
 #include <Graphics/Mesh.h>
 #include <Graphics/Model.h>
 #include <Graphics/Shader.h>
@@ -24,7 +25,7 @@ public:
 
 private:
     Camera m_camera;
-    Texture m_texture;
-    Mesh m_mesh;
+    DirectionalLight m_light;
     Model m_model;
+    Model m_model2;
 };

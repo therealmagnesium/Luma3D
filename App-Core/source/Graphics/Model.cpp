@@ -8,8 +8,8 @@
 
 namespace Graphics
 {
-    const u32 ModelLoadFlags = aiProcess_Triangulate | aiProcess_GenSmoothNormals |
-                               aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices;
+    const u32 ModelLoadFlags =
+        aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices;
 
     static Mesh ProcessMesh(aiMesh* aMesh, const aiScene* aScene, Model& model)
     {
