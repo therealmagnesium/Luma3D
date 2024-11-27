@@ -61,6 +61,7 @@ void main()
     vec3 diffuse = CalculateDiffuse(normal);
     vec3 specular = CalculateSpecular(normal);
     vec3 result = objectColor * (0.7f + diffuse + specular);
+    //vec3 result = vec3(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z);
 
     finalColor = vec4(result, 1.f);
 }

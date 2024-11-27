@@ -1,25 +1,15 @@
 #include "LumaEditor.h"
 
-#include <Core/Application.h>
-#include <Core/Base.h>
-#include <Core/Input.h>
-#include <Core/Log.h>
-
-#include <Graphics/Camera.h>
-#include <Graphics/Light.h>
-#include <Graphics/Mesh.h>
-#include <Graphics/Model.h>
-#include <Graphics/Renderer.h>
-#include <Graphics/RendererInternal.h>
-#include <Graphics/Shader.h>
-#include <Graphics/Texture.h>
-
+#include <Luma3D.h>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <imgui.h>
 
 using namespace Core;
 using namespace Graphics;
+
+static bool editing = false;
 
 void LumaEditor::OnCreate()
 {
@@ -45,8 +35,8 @@ void LumaEditor::OnCreate()
     m_model = LoadModel("assets/models/environment.obj");
     // m_model.materials[1].diffuse = glm::vec3(0.6f, 0.4f, 0.2f);
 
-    m_light = CreateDirectionalLight(&Renderer.defaultShader, glm::vec3(0.7f, -0.9f, -0.8f),
-                                     glm::vec3(0.8f, 0.8f, 0.6f), 1.75f);
+    m_light = CreateDirectionalLight(&Renderer.defaultShader, glm::vec3(-1.f, -1.f, 0.f),
+                                     glm::vec3(0.8f, 0.8f, 0.6f), 4.5f);
 }
 
 void LumaEditor::OnShutdown()
@@ -63,6 +53,11 @@ void LumaEditor::OnUpdate()
 
     if (IsKeyPressed(KEY_C))
         LogCameraInfo(m_camera);
+
+    if (IsKeyPressed(KEY_E))
+        editing = !editing;
+
+    m_camera.isLocked = editing;
 }
 
 void LumaEditor::OnRender()
@@ -70,4 +65,31 @@ void LumaEditor::OnRender()
     Renderer.DrawModel(m_model, Renderer.defaultShader, glm::vec3(0.f), glm::vec3(0.f),
                        glm::vec3(3.f));
     Renderer.DrawSkybox(m_skybox, m_skyboxShader);
+}
+
+void LumaEditor::OnRenderUI()
+{
+    if (editing)
+    {
+        ImGui::Begin("Light Properties");
+        {
+            ImGui::DragFloat3("Direction", glm::value_ptr(m_light.direction), 0.02f, -1.f, 1.f);
+            ImGui::ColorEdit3("Color", glm::value_ptr(m_light.color));
+            ImGui::DragFloat("Intenstiy", &m_light.intensity, 0.02f, 0.1f, 100.f);
+        }
+        ImGui::End();
+
+        ImGui::Begin("Camera Properties");
+        {
+            ImGui::Text("Position: " V3_FMT, V3_OPEN(m_camera.position));
+            ImGui::Text("Rotation: " V3_FMT, V3_OPEN(m_camera.rotation));
+            ImGui::Text("Target: " V3_FMT, V3_OPEN(m_camera.target));
+            ImGui::Text("Direction: " V3_FMT, V3_OPEN(m_camera.direction));
+            ImGui::Text("Up: " V3_FMT, V3_OPEN(m_camera.up));
+            ImGui::Text("FOV: %.1f", m_camera.fov);
+            ImGui::Text("Move speed: %.1f", m_camera.moveSpeed);
+            ImGui::Text("Is locekd: %d", m_camera.isLocked);
+        }
+        ImGui::End();
+    }
 }

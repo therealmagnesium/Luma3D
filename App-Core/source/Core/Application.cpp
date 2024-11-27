@@ -6,6 +6,8 @@
 #include "Graphics/Renderer.h"
 #include "Graphics/Window.h"
 
+#include "UI/UI.h"
+
 #include <glad/glad.h>
 
 namespace Core
@@ -28,6 +30,7 @@ namespace Core
                                           m_specification.name.c_str());
         TimeStateInit(60);
         Graphics::RendererInit();
+        UI::SetupContext();
 
         initialized = true;
         INFO("Successfully initialized the core application!");
@@ -38,6 +41,7 @@ namespace Core
 
     Application::~Application()
     {
+        UI::ShutdownContext();
         Graphics::RendererShutdown();
         Graphics::DestroyWindow(m_window);
         INFO("Successfully shutdown the core application!");
@@ -57,11 +61,12 @@ namespace Core
             Graphics::HandleWindowEvents(m_window);
             this->OnUpdate();
 
-            Graphics::RendererBegin();
-
-            this->OnRender();
+            UI::BeginFrame();
             this->OnRenderUI();
+            UI::EndFrame();
 
+            Graphics::RendererBegin();
+            this->OnRender();
             Graphics::RendererEnd();
         }
 

@@ -6,7 +6,8 @@
 #include "Core/Application.h"
 #include "Core/Log.h"
 #include "Core/Time.h"
-#include "glm/ext/matrix_transform.hpp"
+
+#include "UI/UI.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -71,6 +72,7 @@ namespace Graphics
         glEnable(GL_DEPTH_TEST);
 
         isInitialized = true;
+        INFO("Successfully initialized the renderer!");
     }
 
     void RendererShutdown()
@@ -96,6 +98,8 @@ namespace Graphics
     void RendererEnd()
     {
         Window& window = Core::App->GetWindow();
+
+        UI::RenderFrame();
         SDL_GL_SwapWindow(window.handle);
         Core::UpdateTimeLate();
     }

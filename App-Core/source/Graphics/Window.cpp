@@ -6,8 +6,11 @@
 #include "Core/Input.h"
 #include "Core/Time.h"
 
+#include "UI/UI.h"
+
 #include <SDL2/SDL.h>
 #include <glad/glad.h>
+#include <imgui.h>
 
 namespace Graphics
 {
@@ -80,6 +83,8 @@ namespace Graphics
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
+            UI::ProcessEvent(&event);
+
             switch (event.type)
             {
                 case SDL_QUIT:
@@ -142,9 +147,9 @@ namespace Graphics
             Core::App->Quit();
         }
 
-        SDL_ShowCursor(true);
+        ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
         if (Core::IsMouseDown(MOUSE_BUTTON_LEFT))
-            SDL_ShowCursor(false);
+            ImGui::SetMouseCursor(ImGuiMouseCursor_None);
     }
 
     void DestroyWindow(Window& window)

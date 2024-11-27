@@ -1,15 +1,5 @@
 #pragma once
-#include <Core/Application.h>
-#include <Core/Base.h>
-
-#include <Graphics/Camera.h>
-#include <Graphics/Light.h>
-#include <Graphics/Mesh.h>
-#include <Graphics/Model.h>
-#include <Graphics/Shader.h>
-#include <Graphics/Skybox.h>
-#include <Graphics/RendererInternal.h>
-#include <Graphics/Texture.h>
+#include <Luma3D.h>
 
 using namespace Core;
 using namespace Graphics;
@@ -22,6 +12,7 @@ public:
     void OnCreate() override;
     void OnUpdate() override;
     void OnRender() override;
+    void OnRenderUI() override;
     void OnShutdown() override;
 
 private:
