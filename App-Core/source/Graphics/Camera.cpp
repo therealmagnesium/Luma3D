@@ -51,10 +51,10 @@ namespace Graphics
         camera->rotation.y += mouseOffset.y;
 
         // Cap the camera's pitch
-        if (camera->rotation.y > 90.f)
-            camera->rotation.y = 90.f;
-        if (camera->rotation.y < -90.f)
-            camera->rotation.y = -90.f;
+        if (camera->rotation.y > 89.f)
+            camera->rotation.y = 89.f;
+        if (camera->rotation.y < -89.f)
+            camera->rotation.y = -89.f;
 
         // Calculate the camera's direction using some trig
         camera->direction[0] =

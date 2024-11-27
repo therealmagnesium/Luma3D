@@ -9,16 +9,17 @@ out vec3 fragColor;
 out vec2 fragUVCoords;
 out vec3 fragNormal;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 matModel;
+uniform mat4 matView;
+uniform mat4 matProjection;
+uniform mat4 matNormal;
 
 void main()
 {
-    fragPosition = position;
+    fragPosition = vec3(matModel * vec4(position, 1.f));
     fragColor = color;
     fragUVCoords = uvCoords;
-    fragNormal = normal;
+    fragNormal = mat3(matNormal) * normal;
 
-    gl_Position = projection * view * model * vec4(position, 1.f);
+    gl_Position = matProjection * matView * matModel * vec4(position, 1.f);
 }

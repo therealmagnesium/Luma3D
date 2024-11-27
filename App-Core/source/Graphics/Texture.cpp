@@ -53,10 +53,11 @@ namespace Graphics
 
     void UnloadTexture(Texture& texture)
     {
-        INFO("Unloading texture %s...", texture.path.c_str());
-
         if (texture.data != NULL && texture.isValid)
+        {
+            INFO("Unloading texture %s...", texture.path.c_str());
             stbi_image_free(texture.data);
+        }
     }
 
     void Texture::Bind(u8 slot)
@@ -71,5 +72,10 @@ namespace Graphics
     void Texture::Unbind()
     {
         glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    u32 GetGLTextureFormat(TextureFormat format)
+    {
+        return textureFormatMap[format];
     }
 }

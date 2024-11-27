@@ -49,4 +49,6 @@ namespace Graphics
      * [@param] texture - The texture to unload.
      * */
     void UnloadTexture(Texture& texture);
+
+    u32 GetGLTextureFormat(TextureFormat format);
 }

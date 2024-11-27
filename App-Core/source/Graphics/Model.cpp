@@ -69,7 +69,7 @@ namespace Graphics
             }
         }
 
-        if (!skip)
+        if (!skip && aPath.length > 3)
         {
             Texture texture = LoadTexture(aPath.C_Str(), TEX_FMT_RGBA);
             material.diffuseMap = texture;

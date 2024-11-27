@@ -7,6 +7,7 @@
 #include <Graphics/Mesh.h>
 #include <Graphics/Model.h>
 #include <Graphics/Shader.h>
+#include <Graphics/Skybox.h>
 #include <Graphics/RendererInternal.h>
 #include <Graphics/Texture.h>
 
@@ -27,5 +28,6 @@ private:
     Camera m_camera;
     DirectionalLight m_light;
     Model m_model;
-    Model m_model2;
+    Shader m_skyboxShader;
+    Skybox m_skybox;
 };

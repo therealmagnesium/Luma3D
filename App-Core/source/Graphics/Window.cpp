@@ -141,6 +141,10 @@ namespace Graphics
             INFO("Exiting out of application...");
             Core::App->Quit();
         }
+
+        SDL_ShowCursor(true);
+        if (Core::IsMouseDown(MOUSE_BUTTON_LEFT))
+            SDL_ShowCursor(false);
     }
 
     void DestroyWindow(Window& window)
