@@ -12,7 +12,7 @@ namespace Graphics
     Skybox LoadSkybox(const char** paths, u32 textureCount, TextureFormat format)
     {
         Skybox skybox;
-        skybox.cube = LoadModel("assets/models/cube.obj");
+        skybox.cube = LoadModel("assets/models/cube.glb");
 
         glGenTextures(1, &skybox.id);
         glBindTexture(GL_TEXTURE_CUBE_MAP, skybox.id);

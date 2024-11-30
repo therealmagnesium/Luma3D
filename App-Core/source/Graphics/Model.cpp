@@ -78,12 +78,20 @@ namespace Graphics
 
         aiColor3D diffuseColor(0.f, 0.f, 0.f);
         aiColor3D specularColor(0.f, 0.f, 0.f);
+        float roughness = 0.f;
+        float metalic = 0.f;
 
         if (aMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor) == AI_SUCCESS)
             material.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
 
         if (aMaterial->Get(AI_MATKEY_COLOR_SPECULAR, specularColor) == AI_SUCCESS)
             material.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
+
+        if (aMaterial->Get(AI_MATKEY_ROUGHNESS_FACTOR, roughness) == AI_SUCCESS)
+            material.roughness = roughness;
+
+        if (aMaterial->Get(AI_MATKEY_METALLIC_FACTOR, metalic) == AI_SUCCESS)
+            material.metalic = metalic;
 
         mesh = LoadMesh(vertices.data(), vertices.size(), indices.data(), indices.size(),
                         aMesh->mMaterialIndex);

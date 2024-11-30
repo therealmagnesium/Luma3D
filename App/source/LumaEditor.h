@@ -19,6 +19,7 @@ private:
     Camera m_camera;
     DirectionalLight m_light;
     Model m_model;
+    Model m_model2;
     Shader m_skyboxShader;
     Skybox m_skybox;
 };

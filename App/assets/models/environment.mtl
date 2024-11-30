@@ -1,4 +1,4 @@
-# Blender 4.2.3 LTS MTL File: 'Base Environment.blend'
+# Blender 4.2.3 LTS MTL File: 'environment.blend'
 # www.blender.org
 
 newmtl Bridge1
@@ -54,7 +54,7 @@ illum 1
 newmtl Stone
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.230434 0.233015 0.190313
+Kd 0.041135 0.029254 0.021138
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000

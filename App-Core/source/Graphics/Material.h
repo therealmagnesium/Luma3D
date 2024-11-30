@@ -11,6 +11,9 @@ namespace Graphics
         glm::vec3 diffuse = glm::vec3(1.f);
         glm::vec3 specular = glm::vec3(1.f);
 
+        float roughness = 1.f;
+        float metalic = 0.f;
+
         Texture diffuseMap;
         Texture specularMap;
     };

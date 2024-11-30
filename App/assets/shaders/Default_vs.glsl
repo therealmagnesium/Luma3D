@@ -21,5 +21,5 @@ void main()
     fragUVCoords = uvCoords;
     fragNormal = mat3(matNormal) * normal;
 
-    gl_Position = matProjection * matView * matModel * vec4(position, 1.f);
+    gl_Position = matProjection * matView * matModel * vec4(fragPosition, 1.f);
 }

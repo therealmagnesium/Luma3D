@@ -28,6 +28,12 @@ namespace Graphics
         Renderer.defaultShader.uniformLocs[SHADER_LOC_COLOR_SPECULAR] =
             GetUniformLocation(Renderer.defaultShader, "material.specular");
 
+        Renderer.defaultShader.uniformLocs[SHADER_LOC_VALUE_ROUGHNESS] =
+            GetUniformLocation(Renderer.defaultShader, "material.roughness");
+
+        Renderer.defaultShader.uniformLocs[SHADER_LOC_VALUE_METALIC] =
+            GetUniformLocation(Renderer.defaultShader, "material.metalic");
+
         Renderer.defaultShader.uniformLocs[SHADER_LOC_MAP_DIFFUSE] =
             GetUniformLocation(Renderer.defaultShader, "material.diffuseMap");
 
@@ -117,7 +123,7 @@ namespace Graphics
 
         Window& window = Core::App->GetWindow();
         float aspectRatio = (float)window.width / (float)window.height;
-        Renderer.projection = glm::perspective(glm::radians(45.f), aspectRatio, 0.1f, 1000.f);
+        projection = glm::perspective(glm::radians(45.f), aspectRatio, 0.1f, 1000.f);
     }
 
     void RenderState::DrawMesh(Mesh& mesh, Shader& shader, Material& material)
@@ -132,13 +138,16 @@ namespace Graphics
         shader.SetVec3(shader.uniformLocs[SHADER_LOC_COLOR_SPECULAR],
                        glm::value_ptr(material.specular));
 
+        shader.SetFloat(shader.uniformLocs[SHADER_LOC_VALUE_ROUGHNESS], material.roughness);
+        shader.SetFloat(shader.uniformLocs[SHADER_LOC_VALUE_METALIC], material.metalic);
+
         shader.SetInt(shader.uniformLocs[SHADER_LOC_MAP_DIFFUSE], 0);
 
         shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_VIEW],
-                       glm::value_ptr(Renderer.primaryCamera->view));
+                       glm::value_ptr(primaryCamera->view));
 
         shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_PROJECTION],
-                       glm::value_ptr(Renderer.projection));
+                       glm::value_ptr(projection));
 
         mesh.vertexArray.Bind();
         mesh.indexBuffer.Bind();
