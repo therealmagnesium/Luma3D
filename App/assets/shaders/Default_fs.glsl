@@ -1,4 +1,4 @@
-#version 330 core
+#version 450 core
 out vec4 finalColor;
 
 in vec3 fragPosition;
@@ -124,17 +124,18 @@ void main()
     vec3 V = normalize(cameraPosition - fragPosition);
     vec3 L = normalize(-directionalLight.direction);
     vec3 H = normalize(V + L);
+    vec3 albedo = pow(GetObjectColor(), vec3(2.2f));
 
     vec3 F0 = vec3(0.04f);
-    F0 = mix(F0, GetObjectColor(), material.metalic);
+    F0 = mix(F0, albedo, material.metalic);
 
     float distance = length(-directionalLight.direction);
     float attenuation = 1.f / (distance * distance);
-    vec3 radiance = directionalLight.intensity * directionalLight.color * attenuation;
+    vec3 radiance = directionalLight.color * attenuation;
 
     float NDF = DistributionGGX(N, H, material.roughness);
     float G = GeometrySmith(N, V, L, material.roughness);
-    vec3 F = FresnelSchlick(clamp(dot(H, V), 0.f, 1.f), F0);
+    vec3 F = FresnelSchlick(max(dot(H, V), 0.f), F0);
 
     vec3 numerator = NDF * G * F;
     float denominator = 4.f * max(dot(N, V), 0.f) * max(dot(N, L), 0.f) + 0.0001f;
@@ -144,8 +145,8 @@ void main()
     vec3 kD = (vec3(1.f) - kS) * (1.f - material.metalic);
 
     float NdotL = max(dot(N, L), 0.f);
-    vec3 Lo = (kD * GetObjectColor() / PI + specular) * radiance * NdotL;
-    vec3 ambient = vec3(0.03f) * GetObjectColor();
+    vec3 Lo = directionalLight.intensity * (kD * albedo / PI + specular) * radiance * NdotL;
+    vec3 ambient = vec3(0.5f) * albedo;
 
     vec3 result = Lo + ambient;
     result = ApplyGammaCoorection(result);

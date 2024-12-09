@@ -20,7 +20,7 @@ namespace Graphics
         u32 width;
         u32 height;
         std::string title;
-        bool isVsync = false;
+        bool isVsync = true;
         void* context = NULL;
         SDL_Window* handle = NULL;
     };

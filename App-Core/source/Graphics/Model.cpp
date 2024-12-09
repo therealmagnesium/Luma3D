@@ -8,8 +8,8 @@
 
 namespace Graphics
 {
-    const u32 ModelLoadFlags =
-        aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices;
+    const u32 ModelLoadFlags = aiProcess_Triangulate | aiProcess_GenSmoothNormals |
+                               aiProcess_JoinIdenticalVertices | aiProcess_PreTransformVertices;
 
     static Mesh ProcessMesh(aiMesh* aMesh, const aiScene* aScene, Model& model)
     {
@@ -128,6 +128,7 @@ namespace Graphics
 
         model.materials.resize(scene->mNumMaterials);
         ProcessNode(scene->mRootNode, scene, model);
+        model.isValid = true;
 
         INFO("Successfully loaded model %s!", path);
         return model;
@@ -144,15 +145,19 @@ namespace Graphics
 
     void UnloadModel(Model& model)
     {
-        INFO("Unloading model %s...", model.path.c_str());
+        if (model.isValid)
+        {
+            INFO("Unloading model %s...", model.path.c_str());
 
-        for (u32 i = 0; i < model.meshes.size(); i++)
-            UnloadMesh(model.meshes[i]);
+            for (u32 i = 0; i < model.meshes.size(); i++)
+                UnloadMesh(model.meshes[i]);
 
-        for (u32 i = 0; i < model.materials.size(); i++)
-            UnloadTexture(model.materials[i].diffuseMap);
+            for (u32 i = 0; i < model.materials.size(); i++)
+                UnloadTexture(model.materials[i].diffuseMap);
 
-        model.meshes = std::vector<Mesh>();
+            model.meshes = std::vector<Mesh>();
+            model.isValid = false;
+        }
     }
 
 }

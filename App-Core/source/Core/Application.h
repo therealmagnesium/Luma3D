@@ -1,8 +1,11 @@
 #pragma once
 #include "Core/Base.h"
+#include "Core/Scene.h"
 #include "Graphics/Window.h"
 
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace Core
 {
@@ -54,16 +57,22 @@ namespace Core
         // [@brief] Shutdown the application, and exit the main game loop.
         void Quit();
 
+        // [@brief] Add a scene that can be switched to until it's removed.
+        void AddScene(Scene* scene, const char* name);
+
+        // [@brief] Remove a scene from the application's scene map, frees the scene's memory.
+        void RemoveScene(const char* name);
+
+        // [@brief] The application will switch to the scene mapped with the given name.
+        void SwitchToScene(const char* name);
+
     protected:
-        virtual void OnCreate() {}
-        virtual void OnUpdate() {}
-        virtual void OnRender() {}
         virtual void OnRenderUI() {}
-        virtual void OnShutdown() {}
 
     private:
         bool m_isRunning = false;
         ApplicationSpecification m_specification;
+        std::unordered_map<std::string, Scene*> m_scenesMap;
         Graphics::Window m_window;
     };
 

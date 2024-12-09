@@ -11,6 +11,7 @@ namespace Graphics
 {
     struct Model
     {
+        bool isValid = false;
         glm::mat4 transform = glm::mat4(1.f);
         std::string path;
         std::vector<Mesh> meshes;

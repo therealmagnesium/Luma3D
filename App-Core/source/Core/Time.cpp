@@ -34,12 +34,9 @@ namespace Core
         Time.frameTime = (float)SDL_GetTicks() - Time.now;
         Graphics::Window& window = App->GetWindow();
 
-        if (!window.isVsync)
-        {
-            // Cap the frame rate if we rendered the frame too fast
-            if (Time.frameDelay > Time.frameTime)
-                SDL_Delay(Time.frameDelay - Time.frameTime);
-        }
+        // Cap the frame rate if we rendered the frame too fast
+        if (Time.frameDelay > Time.frameTime)
+            SDL_Delay(Time.frameDelay - Time.frameTime);
     }
 
 }

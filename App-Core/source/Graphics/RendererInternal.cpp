@@ -34,7 +34,8 @@ namespace Graphics
     void VertexArray::StoreInAtrribList(u32 location, u32 numElements, u64 offset)
     {
         glEnableVertexAttribArray(location);
-        glVertexAttribPointer(location, numElements, GL_FLOAT, false, sizeof(Vertex), (void*)offset);
+        glVertexAttribPointer(location, numElements, GL_FLOAT, false, sizeof(Vertex),
+                              (void*)offset);
     }
 
     VertexBuffer CreateVertexBuffer()

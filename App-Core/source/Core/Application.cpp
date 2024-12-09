@@ -13,6 +13,8 @@
 namespace Core
 {
     static bool initialized = false;
+    static std::string selectedSceneName;
+
     Application* App = NULL;
 
     Application::Application(const ApplicationSpecification& appInfo) : m_specification(appInfo)
@@ -28,6 +30,7 @@ namespace Core
 
         m_window = Graphics::CreateWindow(m_specification.windowWidth, m_specification.windowHeight,
                                           m_specification.name.c_str());
+
         TimeStateInit(60);
         Graphics::RendererInit();
         UI::SetupContext();
@@ -41,6 +44,17 @@ namespace Core
 
     Application::~Application()
     {
+        for (auto& [name, scene] : m_scenesMap)
+        {
+            if (scene != NULL)
+            {
+                INFO("Deleting scene '%s'...", name.c_str());
+                scene->OnShutdown();
+                delete scene;
+                scene = NULL;
+            }
+        }
+
         UI::ShutdownContext();
         Graphics::RendererShutdown();
         Graphics::DestroyWindow(m_window);
@@ -49,32 +63,63 @@ namespace Core
 
     void Application::Run()
     {
-        this->OnCreate();
         if (Graphics::Renderer.primaryCamera == NULL)
         {
             FATAL("Cannot run application because no primary camera is set!");
             this->Quit();
         }
 
+        if (m_scenesMap.size() < 1)
+        {
+            FATAL("Cannot run application because no scenes exist!");
+            this->Quit();
+        }
+
         while (m_isRunning)
         {
             Graphics::HandleWindowEvents(m_window);
-            this->OnUpdate();
+            m_scenesMap[selectedSceneName]->OnUpdate();
 
             UI::BeginFrame();
             this->OnRenderUI();
             UI::EndFrame();
 
             Graphics::RendererBegin();
-            this->OnRender();
+            m_scenesMap[selectedSceneName]->OnRender();
             Graphics::RendererEnd();
         }
-
-        this->OnShutdown();
     }
 
     void Application::Quit()
     {
         m_isRunning = false;
+    }
+
+    void Application::AddScene(Scene* scene, const char* name)
+    {
+        m_scenesMap[name] = scene;
+    }
+
+    void Application::RemoveScene(const char* name)
+    {
+        if (m_scenesMap[name] != NULL)
+        {
+            m_scenesMap[name]->OnShutdown();
+            delete m_scenesMap[name];
+            m_scenesMap[name] = NULL;
+        }
+    }
+
+    void Application::SwitchToScene(const char* name)
+    {
+        if (m_scenesMap[name] == NULL)
+        {
+            ERROR("Cannot switch to scene '%s' because it doesn't exist!", name);
+            return;
+        }
+
+        m_scenesMap[name]->OnCreate();
+        selectedSceneName = name;
+        INFO("Successfully switched to scene '%s'!", name);
     }
 }

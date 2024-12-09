@@ -20,7 +20,7 @@ namespace UI
 
         Graphics::Window& window = Core::App->GetWindow();
         ImGui_ImplSDL2_InitForOpenGL(window.handle, window.context);
-        ImGui_ImplOpenGL3_Init("#version 330");
+        ImGui_ImplOpenGL3_Init("#version 450");
 
         INFO("Succesfully initialized the UI context!");
     }

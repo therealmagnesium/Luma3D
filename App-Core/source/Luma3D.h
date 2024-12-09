@@ -5,6 +5,7 @@
 #include "Core/IO.h"
 #include "Core/KeyCodes.h"
 #include "Core/Log.h"
+#include "Core/Scene.h"
 #include "Core/Time.h"
 
 #include "Graphics/Camera.h"
@@ -18,3 +19,5 @@
 #include "Graphics/Skybox.h"
 #include "Graphics/Texture.h"
 #include "Graphics/Window.h"
+
+#include "UI/UI.h"
