@@ -25,7 +25,7 @@ void TestScene::OnCreate()
     m_model = LoadModel("assets/models/environment.obj");
     m_model2 = LoadModel("assets/models/cube.glb");
 
-    m_light = CreateDirectionalLight(&Renderer.defaultShader, glm::vec3(-0.1f, -0.8f, -0.4f),
+    m_light = CreateDirectionalLight(Renderer.defaultShader, glm::vec3(-0.1f, -0.8f, -0.4f),
                                      glm::vec3(0.8f, 0.8f, 0.6f), 10.f);
 }
 
@@ -39,7 +39,7 @@ void TestScene::OnShutdown()
 
 void TestScene::OnUpdate()
 {
-    UpdateDirectionalLight(m_light);
+    UpdateDirectionalLight(m_light, Renderer.defaultShader);
     UpdateCamera(CAMERA_FREE);
 }
 

@@ -45,11 +45,14 @@ namespace Core
         // [@brief] Returns true if the application is running.
         inline bool IsRunning() const { return m_isRunning; }
 
-        // [@brief] Get the app's specificatioa.n
+        // [@brief] Get the app's specification.
         inline ApplicationSpecification& GetSpecification() { return m_specification; }
 
         // [@brief] Get the app's main window.
         inline Graphics::Window& GetWindow() { return m_window; }
+
+        // [@brief] Returns the currently selected scene.
+        Scene* GetCurrentScene();
 
         // [@brief] Start the application, and enter the main game loop.
         void Run();

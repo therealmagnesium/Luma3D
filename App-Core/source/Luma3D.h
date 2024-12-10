@@ -1,6 +1,9 @@
 #pragma once
 #include "Core/Application.h"
 #include "Core/Base.h"
+#include "Core/Components.h"
+#include "Core/Entity.h"
+#include "Core/EntityManager.h"
 #include "Core/Input.h"
 #include "Core/IO.h"
 #include "Core/KeyCodes.h"

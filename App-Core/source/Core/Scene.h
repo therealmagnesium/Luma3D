@@ -1,6 +1,6 @@
 #pragma once
-#include "Core/Base.h"
-#include <string>
+#include "Core/Entity.h"
+#include "Core/EntityManager.h"
 
 namespace Core
 {
@@ -15,6 +15,14 @@ namespace Core
         virtual void OnRender() {}
         virtual void OnShutdown() {}
 
+        inline EntityManager& GetEntityManager() { return m_entityManager; }
+
+        inline std::shared_ptr<Entity> AddEntity(const char* tag)
+        {
+            return m_entityManager.AddEntity(tag);
+        }
+
     private:
+        EntityManager m_entityManager;
     };
 }

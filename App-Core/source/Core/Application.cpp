@@ -78,6 +78,7 @@ namespace Core
         while (m_isRunning)
         {
             Graphics::HandleWindowEvents(m_window);
+            m_scenesMap[selectedSceneName]->GetEntityManager().Update();
             m_scenesMap[selectedSceneName]->OnUpdate();
 
             UI::BeginFrame();
@@ -86,6 +87,7 @@ namespace Core
 
             Graphics::RendererBegin();
             m_scenesMap[selectedSceneName]->OnRender();
+            m_scenesMap[selectedSceneName]->GetEntityManager().DrawEntities();
             Graphics::RendererEnd();
         }
     }
@@ -121,5 +123,10 @@ namespace Core
         m_scenesMap[name]->OnCreate();
         selectedSceneName = name;
         INFO("Successfully switched to scene '%s'!", name);
+    }
+
+    Scene* Application::GetCurrentScene()
+    {
+        return m_scenesMap[selectedSceneName];
     }
 }

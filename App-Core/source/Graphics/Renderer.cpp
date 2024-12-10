@@ -68,6 +68,8 @@ namespace Graphics
             return;
         }
 
+        Renderer.clearColor = glm::vec4(0.08f, 0.1f, 0.12f, 1.f);
+
         const char* vertPath = "assets/shaders/Default_vs.glsl";
         const char* fragPath = "assets/shaders/Default_fs.glsl";
         Renderer.defaultShader = LoadShader(vertPath, fragPath);
@@ -97,7 +99,6 @@ namespace Graphics
 
     void RendererBegin()
     {
-        Renderer.clearColor = glm::vec4(0.08f, 0.1f, 0.12f, 1.f);
         Renderer.ClearContext(Renderer.clearColor);
     }
 
