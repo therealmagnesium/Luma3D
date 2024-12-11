@@ -45,11 +45,11 @@ namespace Graphics
      */
     Camera CreateCamera(glm::vec3 position, glm::vec3 up, float fov);
 
-    /*
-     * [@brief] Updates the primary camera with a camera type.
-     * [@param] type - The way the camera should behave when updating (freelook, orbital).
-     */
-    void UpdateCamera(CameraType type);
+    // [@breif] Makes the given camera act as a freelook/editor camera.
+    void UpdateCameraFree(Camera& camera);
+
+    // [@brief] Updates the given camera's view matrix and direction vector.
+    void UpdateCameraMatrix(Camera& camera);
 
     // [@brief] Log information about a camera
     void LogCameraInfo(const Camera& camera);

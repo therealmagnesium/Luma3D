@@ -12,31 +12,27 @@ static bool editing = false;
 
 LumaEditor::LumaEditor(const ApplicationSpecification& specification) : Application(specification)
 {
-    this->AddScene(new TestScene(), "Test");
-    this->AddScene(new PlayScene(), "Play");
+    m_testScene = new TestScene();
+    m_playScene = new PlayScene();
+
+    this->AddScene(m_testScene, "Test");
+    this->AddScene(m_playScene, "Play");
 
     this->SwitchToScene("Play");
+
+    m_sceneHeirarchyPanel.SetContext(m_playScene);
 }
 
 void LumaEditor::OnRenderUI()
 {
-    EntityManager& entityManager = this->GetCurrentScene()->GetEntityManager();
-
-    if (IsKeyPressed(KEY_E))
+    if (IsKeyPressed(KEY_F1))
         editing = !editing;
 
-    Renderer.primaryCamera->isLocked = editing;
+    Scene* currentScene = this->GetCurrentScene();
+    Camera& editorCamera = currentScene->GetEditorCamera();
+
+    editorCamera.isLocked = editing;
 
     if (editing)
-    {
-        ImGui::Begin("Scene Heirarchy Panel");
-        {
-            for (auto& entity : entityManager.GetEntities())
-            {
-                const char* tag = entity->GetTag();
-                ImGui::Text("%s", tag);
-            }
-        }
-        ImGui::End();
-    }
+        m_sceneHeirarchyPanel.Display();
 }

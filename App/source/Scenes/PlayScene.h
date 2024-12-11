@@ -15,8 +15,8 @@ public:
     void OnRender() override;
 
 private:
-    Camera m_camera;
-
-    std::shared_ptr<Entity> m_entity;
+    std::shared_ptr<Entity> m_camera;
     std::shared_ptr<Entity> m_directionalLight;
+    std::shared_ptr<Entity> m_player;
+    std::shared_ptr<Entity> m_ground;
 };

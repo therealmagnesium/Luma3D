@@ -63,12 +63,6 @@ namespace Core
 
     void Application::Run()
     {
-        if (Graphics::Renderer.primaryCamera == NULL)
-        {
-            FATAL("Cannot run application because no primary camera is set!");
-            this->Quit();
-        }
-
         if (m_scenesMap.size() < 1)
         {
             FATAL("Cannot run application because no scenes exist!");
@@ -78,8 +72,16 @@ namespace Core
         while (m_isRunning)
         {
             Graphics::HandleWindowEvents(m_window);
+
             m_scenesMap[selectedSceneName]->GetEntityManager().Update();
             m_scenesMap[selectedSceneName]->OnUpdate();
+
+            if (!m_scenesMap[selectedSceneName]->IsActive())
+            {
+                Graphics::SetPrimaryCamera(&m_scenesMap[selectedSceneName]->GetEditorCamera());
+                Graphics::UpdateCameraFree(m_scenesMap[selectedSceneName]->GetEditorCamera());
+                Graphics::UpdateCameraMatrix(m_scenesMap[selectedSceneName]->GetEditorCamera());
+            }
 
             UI::BeginFrame();
             this->OnRenderUI();

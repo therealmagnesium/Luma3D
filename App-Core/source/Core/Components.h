@@ -1,7 +1,9 @@
 #pragma once
+#include "Graphics/Camera.h"
 #include "Graphics/Light.h"
 #include "Graphics/Model.h"
 #include "Graphics/Renderer.h"
+
 #include <glm/glm.hpp>
 
 namespace Core
@@ -20,7 +22,8 @@ namespace Core
             scale = glm::vec3(1.f);
         }
 
-        TransformComponent(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+        TransformComponent(glm::vec3 position, glm::vec3 rotation = glm::vec3(0.f),
+                           glm::vec3 scale = glm::vec3(1.f))
         {
             this->position = position;
             this->rotation = rotation;
@@ -49,6 +52,20 @@ namespace Core
             this->shader = shader;
             this->light = Graphics::CreateDirectionalLight(this->shader, glm::vec3(0.f),
                                                            glm::vec3(0.8f, 0.8f, 0.6f), 10.f);
+        }
+    };
+
+    struct CameraComponent
+    {
+        bool isEnabled = false;
+        bool isPrimary = false;
+        Graphics::Camera camera;
+
+        CameraComponent() = default;
+        CameraComponent(bool isPrimary)
+        {
+            this->isPrimary = isPrimary;
+            this->camera = Graphics::CreateCamera(glm::vec3(0.f), glm::vec3(0.f, 1.f, 0.f), 45.f);
         }
     };
 }

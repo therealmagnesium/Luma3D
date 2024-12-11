@@ -127,8 +127,11 @@ namespace Graphics
         projection = glm::perspective(glm::radians(45.f), aspectRatio, 0.1f, 1000.f);
     }
 
-    void RenderState::DrawMesh(Mesh& mesh, Shader& shader, Material& material)
+    void RenderState::DrawMesh(Mesh& mesh, Shader& shader, glm::mat4& transform, Material& material)
     {
+        glm::mat4 normal = glm::mat4(1.f);
+        normal = glm::transpose(glm::inverse(transform));
+
         shader.Bind();
 
         material.diffuseMap.Bind(0);
@@ -150,6 +153,12 @@ namespace Graphics
         shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_PROJECTION],
                        glm::value_ptr(projection));
 
+        shader.SetVec3(shader.uniformLocs[SHADER_LOC_VECTOR_VIEW],
+                       glm::value_ptr(primaryCamera->position));
+
+        shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_MODEL], glm::value_ptr(transform));
+        shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_NORMAL], glm::value_ptr(normal));
+
         mesh.vertexArray.Bind();
         mesh.indexBuffer.Bind();
 
@@ -163,34 +172,11 @@ namespace Graphics
         shader.Unbind();
     }
 
-    void RenderState::DrawModel(Model& model, Shader& shader, glm::vec3 position,
-                                glm::vec3 rotation, glm::vec3 scale)
+    void RenderState::DrawModel(Model& model, Shader& shader)
     {
-        model.transform = glm::mat4(1.f);
-        model.transform = glm::translate(model.transform, position);
-        model.transform =
-            glm::rotate(model.transform, glm::radians(rotation.x), glm::vec3(1.f, 0.f, 0.f));
-        model.transform =
-            glm::rotate(model.transform, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
-        model.transform =
-            glm::rotate(model.transform, glm::radians(rotation.z), glm::vec3(1.f, 0.f, 1.f));
-        model.transform = glm::scale(model.transform, scale);
-
-        glm::mat4 normal = glm::mat4(1.f);
-        normal = glm::transpose(glm::inverse(model.transform));
-
-        shader.Bind();
-
-        shader.SetVec3(shader.uniformLocs[SHADER_LOC_VECTOR_VIEW],
-                       glm::value_ptr(primaryCamera->position));
-        shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_MODEL],
-                       glm::value_ptr(model.transform));
-        shader.SetMat4(shader.uniformLocs[SHADER_LOC_MATRIX_NORMAL], glm::value_ptr(normal));
-
-        shader.Unbind();
-
         for (u32 i = 0; i < model.meshes.size(); i++)
-            this->DrawMesh(model.meshes[i], shader, model.materials[model.meshes[i].materialIndex]);
+            this->DrawMesh(model.meshes[i], shader, model.transform,
+                           model.materials[model.meshes[i].materialIndex]);
     }
 
     void RenderState::DrawSkybox(Skybox& skybox, Shader& shader)

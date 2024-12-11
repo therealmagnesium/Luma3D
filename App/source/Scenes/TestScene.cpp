@@ -40,14 +40,15 @@ void TestScene::OnShutdown()
 void TestScene::OnUpdate()
 {
     UpdateDirectionalLight(m_light, Renderer.defaultShader);
-    UpdateCamera(CAMERA_FREE);
+    UpdateCameraMatrix(m_camera);
 }
 
 void TestScene::OnRender()
 {
+    /*
     Renderer.DrawModel(m_model, Renderer.defaultShader, glm::vec3(0.f), glm::vec3(0.f),
                        glm::vec3(2.f));
     Renderer.DrawModel(m_model2, Renderer.defaultShader, glm::vec3(5.f, 5.f, 0.f), glm::vec3(0.f),
                        glm::vec3(2.f));
-    Renderer.DrawSkybox(m_skybox, m_skyboxShader);
+    Renderer.DrawSkybox(m_skybox, m_skyboxShader); */
 }

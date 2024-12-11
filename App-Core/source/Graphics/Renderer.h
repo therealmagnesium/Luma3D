@@ -19,9 +19,8 @@ namespace Graphics
         Camera* primaryCamera = NULL;
 
         void ClearContext(const glm::vec4& color);
-        void DrawMesh(Mesh& mesh, Shader& shader, Material& material);
-        void DrawModel(Model& model, Shader& shader, glm::vec3 position, glm::vec3 rotation,
-                       glm::vec3 scale);
+        void DrawMesh(Mesh& mesh, Shader& shader, glm::mat4& transform, Material& material);
+        void DrawModel(Model& model, Shader& shader);
         void DrawSkybox(Skybox& skybox, Shader& shader);
     };
 

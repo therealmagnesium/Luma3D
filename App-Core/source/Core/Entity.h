@@ -9,7 +9,8 @@
 
 namespace Core
 {
-    typedef std::tuple<TransformComponent, ModelComponent, DirectionalLightComponent>
+    typedef std::tuple<TransformComponent, ModelComponent, DirectionalLightComponent,
+                       CameraComponent>
         ComponentTuple;
 
     class Entity
@@ -23,7 +24,8 @@ namespace Core
         inline bool IsAlive() const { return m_isAlive; }
         inline const char* GetTag() { return m_tag.c_str(); }
 
-        inline void SetActive(b8 active) { m_isActive = active; }
+        inline void SetActive(bool active) { m_isActive = active; }
+        inline void SetTag(const char* tag) { m_tag = tag; }
         inline void Destroy() { m_isAlive = false; }
 
         template <typename T>

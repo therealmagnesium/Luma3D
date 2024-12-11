@@ -1,4 +1,7 @@
 #pragma once
+#include "Scenes/PlayScene.h"
+#include "Scenes/TestScene.h"
+#include "Panels/SceneHeirarchyPanel.h"
 #include <Luma3D.h>
 
 using namespace Core;
@@ -12,4 +15,7 @@ public:
     void OnRenderUI() override;
 
 private:
+    TestScene* m_testScene = NULL;
+    PlayScene* m_playScene = NULL;
+    SceneHeirarchyPanel m_sceneHeirarchyPanel;
 };
