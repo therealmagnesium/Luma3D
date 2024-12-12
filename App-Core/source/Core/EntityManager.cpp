@@ -20,6 +20,16 @@ namespace Core
         return entity;
     }
 
+    void EntityManager::DestroyEntity(std::shared_ptr<Entity>& entity)
+    {
+        auto entityIndex = std::find(m_entities.begin(), m_entities.end(), entity);
+        if (entityIndex == m_entities.end())
+            return;
+
+        entity->SetActive(false);
+        m_toDestroy.push_back(entity);
+    }
+
     void EntityManager::Update()
     {
         assert(m_context != NULL);
@@ -31,6 +41,15 @@ namespace Core
             m_entityMap[entityTag].push_back(entity);
         }
 
+        for (u64 i = 0; i < m_toDestroy.size(); i++)
+        {
+            auto& entity = m_toDestroy[i];
+
+            m_entities.erase(m_entities.begin() + entity->GetID());
+            m_entityMap[entity->GetTag()].erase(m_entityMap[entity->GetTag()].begin() +
+                                                entity->GetID());
+        }
+
         for (u64 i = 0; i < m_entities.size(); i++)
         {
             auto& entity = m_entities[i];
@@ -38,11 +57,12 @@ namespace Core
             if (!entity->IsAlive())
             {
                 m_entities.erase(m_entities.begin() + i);
-                m_entityMap[entityTag].erase(m_entities.begin() + i);
+                m_entityMap[entityTag].erase(m_entityMap[entityTag].begin() + i);
             }
         }
 
         m_toAdd.clear();
+        m_toDestroy.clear();
 
         for (u64 i = 0; i < m_entities.size(); i++)
         {

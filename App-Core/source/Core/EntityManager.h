@@ -19,6 +19,7 @@ namespace Core
     public:
         EntityManager() = default;
         std::shared_ptr<Entity> AddEntity(const char* tag);
+        void DestroyEntity(std::shared_ptr<Entity>& entity);
         void Update();
         void DrawEntities();
 
@@ -33,6 +34,7 @@ namespace Core
         u64 m_totalEntities = 0;
         EntityVec m_entities;
         EntityVec m_toAdd;
+        EntityVec m_toDestroy;
         EntityMap m_entityMap;
         Scene* m_context = NULL;
     };

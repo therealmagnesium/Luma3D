@@ -21,6 +21,17 @@ void SceneHeirarchyPanel::Display()
 
         if (ImGui::IsWindowHovered() && IsMouseClicked(MOUSE_BUTTON_LEFT))
             m_selectionContext = NULL;
+
+        if (m_selectionContext == NULL)
+        {
+            if (ImGui::BeginPopupContextWindow())
+            {
+                if (ImGui::MenuItem("Create Empty Entity"))
+                    entityManager.AddEntity("Entity");
+
+                ImGui::EndPopup();
+            }
+        }
     }
     ImGui::End();
 
@@ -34,6 +45,7 @@ void SceneHeirarchyPanel::Display()
 
 void SceneHeirarchyPanel::DrawEntityNode(std::shared_ptr<Entity>& entity)
 {
+    EntityManager& entityManager = m_context->GetEntityManager();
     ImGuiTreeNodeFlags flags = ((entity == m_selectionContext) ? ImGuiTreeNodeFlags_Selected : 0) |
                                ImGuiTreeNodeFlags_OpenOnArrow;
     bool isOpen = ImGui::TreeNodeEx((void*)entity->GetID(), flags, "%s", entity->GetTag());
@@ -41,8 +53,23 @@ void SceneHeirarchyPanel::DrawEntityNode(std::shared_ptr<Entity>& entity)
     if (ImGui::IsItemClicked())
         m_selectionContext = entity;
 
+    bool entityDeleted = false;
+    if (ImGui::BeginPopupContextItem())
+    {
+        if (ImGui::MenuItem("Delete Entity"))
+            entityDeleted = true;
+
+        ImGui::EndPopup();
+    }
+
     if (isOpen)
         ImGui::TreePop();
+
+    if (entityDeleted)
+    {
+        entityManager.DestroyEntity(m_selectionContext);
+        m_selectionContext = NULL;
+    }
 }
 
 void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
@@ -74,7 +101,6 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
                               ImGuiTreeNodeFlags_DefaultOpen, "Model"))
         {
             auto& mc = entity->GetComponent<ModelComponent>();
-
             ImGui::TreePop();
         }
     }
@@ -85,7 +111,7 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
                               ImGuiTreeNodeFlags_DefaultOpen, "Directional Light"))
         {
             auto& dlc = entity->GetComponent<DirectionalLightComponent>();
-            ImGui::DragFloat("Intensity", &dlc.light.intensity);
+            ImGui::DragFloat("Intensity", &dlc.light.intensity, 0.1f);
             ImGui::ColorPicker3("Color", glm::value_ptr(dlc.light.color));
 
             ImGui::TreePop();
