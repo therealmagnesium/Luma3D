@@ -17,6 +17,8 @@ private:
     void DrawComponents(std::shared_ptr<Entity>& entity);
 
 private:
+    friend class AssetManger;
+
     Scene* m_context = NULL;
     std::shared_ptr<Entity> m_selectionContext = NULL;
 };

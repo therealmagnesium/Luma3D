@@ -39,8 +39,36 @@ void SceneHeirarchyPanel::Display()
     {
         if (m_selectionContext != NULL)
             this->DrawComponents(m_selectionContext);
+
+        if (ImGui::Button("Add Component"))
+            ImGui::OpenPopup("Add Component");
+
+        if (ImGui::BeginPopup("Add Component"))
+        {
+            if (ImGui::MenuItem("Transform"))
+            {
+                m_selectionContext->AddComponent<TransformComponent>();
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::MenuItem("Camera"))
+            {
+                m_selectionContext->AddComponent<CameraComponent>(false);
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::MenuItem("Directional Light"))
+            {
+                m_selectionContext->AddComponent<DirectionalLightComponent>(Renderer.defaultShader);
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
+        }
     }
     ImGui::End();
+
+    ImGui::ShowDemoWindow();
 }
 
 void SceneHeirarchyPanel::DrawEntityNode(std::shared_ptr<Entity>& entity)
@@ -101,6 +129,28 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
                               ImGuiTreeNodeFlags_DefaultOpen, "Model"))
         {
             auto& mc = entity->GetComponent<ModelComponent>();
+
+            static s32 selectedModel = -1;
+            const char* names[AssetManager::GetModelCount()];
+            AssetManager::GetAllModelNames(names);
+
+            if (ImGui::Button("Select Model"))
+                ImGui::OpenPopup("Select Model");
+
+            ImGui::SameLine();
+            ImGui::Text("%s", (selectedModel == -1) ? "None" : names[selectedModel]);
+
+            if (ImGui::BeginPopup("Select Model"))
+            {
+                for (u32 i = 0; i < LEN(names); i++)
+                    if (ImGui::Selectable(names[i]))
+                    {
+                        selectedModel = i;
+                        mc.model = AssetManager::GetModel(names[i]);
+                    }
+                ImGui::EndPopup();
+            }
+
             ImGui::TreePop();
         }
     }
@@ -113,6 +163,21 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
             auto& dlc = entity->GetComponent<DirectionalLightComponent>();
             ImGui::DragFloat("Intensity", &dlc.light.intensity, 0.1f);
             ImGui::ColorPicker3("Color", glm::value_ptr(dlc.light.color));
+
+            ImGui::TreePop();
+        }
+    }
+
+    if (entity->HasComponent<CameraComponent>())
+    {
+        if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(),
+                              ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
+        {
+            auto& cc = entity->GetComponent<CameraComponent>();
+            ImGui::Checkbox("Primary?", &cc.isPrimary);
+            ImGui::Checkbox("Locked?", &cc.camera.isLocked);
+            ImGui::DragFloat("Move Speed", &cc.camera.moveSpeed);
+            ImGui::DragFloat("FOV", &cc.camera.fov);
 
             ImGui::TreePop();
         }

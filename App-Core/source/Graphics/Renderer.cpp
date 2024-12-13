@@ -174,9 +174,12 @@ namespace Graphics
 
     void RenderState::DrawModel(Model& model, Shader& shader)
     {
-        for (u32 i = 0; i < model.meshes.size(); i++)
-            this->DrawMesh(model.meshes[i], shader, model.transform,
-                           model.materials[model.meshes[i].materialIndex]);
+        if (model.isValid)
+        {
+            for (u32 i = 0; i < model.meshes.size(); i++)
+                this->DrawMesh(model.meshes[i], shader, model.transform,
+                               model.materials[model.meshes[i].materialIndex]);
+        }
     }
 
     void RenderState::DrawSkybox(Skybox& skybox, Shader& shader)

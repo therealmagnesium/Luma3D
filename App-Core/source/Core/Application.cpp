@@ -1,4 +1,5 @@
 #include "Core/Application.h"
+#include "Core/AssetManager.h"
 #include "Core/Base.h"
 #include "Core/Log.h"
 #include "Core/Time.h"
@@ -55,6 +56,7 @@ namespace Core
             }
         }
 
+        AssetManager::Clean();
         UI::ShutdownContext();
         Graphics::RendererShutdown();
         Graphics::DestroyWindow(m_window);
