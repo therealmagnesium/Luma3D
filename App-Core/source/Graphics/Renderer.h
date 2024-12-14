@@ -18,7 +18,7 @@ namespace Graphics
         glm::mat4 projection = glm::mat4(1.f);
         Camera* primaryCamera = NULL;
 
-        void ClearContext(const glm::vec4& color);
+        void ClearContext(u32 bufferLevel = 0);
         void DrawMesh(Mesh& mesh, Shader& shader, glm::mat4& transform, Material& material);
         void DrawModel(Model& model, Shader& shader);
         void DrawSkybox(Skybox& skybox, Shader& shader);

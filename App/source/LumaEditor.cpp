@@ -8,8 +8,6 @@
 using namespace Core;
 using namespace Graphics;
 
-static bool editing = false;
-
 LumaEditor::LumaEditor(const ApplicationSpecification& specification) : Application(specification)
 {
     m_testScene = new TestScene();
@@ -21,18 +19,15 @@ LumaEditor::LumaEditor(const ApplicationSpecification& specification) : Applicat
     this->SwitchToScene("Play");
 
     m_sceneHeirarchyPanel.SetContext(m_playScene);
+    m_sceneViewportPanel.SetContext(m_playScene);
 }
 
 void LumaEditor::OnRenderUI()
 {
-    if (IsKeyPressed(KEY_F1))
-        editing = !editing;
-
+    ImGui::DockSpaceOverViewport();
     Scene* currentScene = this->GetCurrentScene();
     Camera& editorCamera = currentScene->GetEditorCamera();
 
-    editorCamera.isLocked = editing;
-
-    if (editing)
-        m_sceneHeirarchyPanel.Display();
+    m_sceneHeirarchyPanel.Display();
+    m_sceneViewportPanel.Display();
 }

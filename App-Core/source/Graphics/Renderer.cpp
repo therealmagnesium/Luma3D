@@ -77,7 +77,6 @@ namespace Graphics
         SetupUniforms();
 
         TextureFormatsInit();
-        glEnable(GL_DEPTH_TEST);
 
         isInitialized = true;
         INFO("Successfully initialized the renderer!");
@@ -99,12 +98,18 @@ namespace Graphics
 
     void RendererBegin()
     {
-        Renderer.ClearContext(Renderer.clearColor);
+        Renderer.ClearContext(1);
+        glEnable(GL_DEPTH_TEST);
+
+        Window& window = Core::App->GetWindow();
+        float aspectRatio = (float)window.width / (float)window.height;
+        Renderer.projection = glm::perspective(glm::radians(45.f), aspectRatio, 0.1f, 1000.f);
     }
 
     void RendererEnd()
     {
         Window& window = Core::App->GetWindow();
+        glDisable(GL_DEPTH_TEST);
 
         UI::RenderFrame();
         SDL_GL_SwapWindow(window.handle);
@@ -116,15 +121,25 @@ namespace Graphics
         Renderer.primaryCamera = camera;
     }
 
-    void RenderState::ClearContext(const glm::vec4& color)
+    void RenderState::ClearContext(u32 bufferLevel)
     {
-        clearColor = color;
-        glClearColor(V4_OPEN(clearColor));
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        u32 bufferInt = GL_COLOR_BUFFER_BIT;
+        switch (bufferLevel)
+        {
+            case 1:
+                bufferInt |= GL_DEPTH_BUFFER_BIT;
+                break;
 
-        Window& window = Core::App->GetWindow();
-        float aspectRatio = (float)window.width / (float)window.height;
-        projection = glm::perspective(glm::radians(45.f), aspectRatio, 0.1f, 1000.f);
+            case 2:
+                bufferInt |= (GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+                break;
+
+            default:
+                break;
+        }
+
+        glClearColor(V4_OPEN(clearColor));
+        glClear(bufferInt);
     }
 
     void RenderState::DrawMesh(Mesh& mesh, Shader& shader, glm::mat4& transform, Material& material)

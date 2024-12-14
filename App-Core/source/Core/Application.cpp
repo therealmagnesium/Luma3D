@@ -32,6 +32,8 @@ namespace Core
         m_window = Graphics::CreateWindow(m_specification.windowWidth, m_specification.windowHeight,
                                           m_specification.name.c_str());
 
+        m_framebuffer = Graphics::CreateFramebuffer(1280, 720);
+
         TimeStateInit(60);
         Graphics::RendererInit();
         UI::SetupContext();
@@ -58,8 +60,11 @@ namespace Core
 
         AssetManager::Clean();
         UI::ShutdownContext();
+
         Graphics::RendererShutdown();
+        Graphics::DeleteFramebuffer(m_framebuffer);
         Graphics::DestroyWindow(m_window);
+
         INFO("Successfully shutdown the core application!");
     }
 
@@ -89,9 +94,14 @@ namespace Core
             this->OnRenderUI();
             UI::EndFrame();
 
+            Graphics::Renderer.ClearContext(0);
+            m_framebuffer.Bind();
+
             Graphics::RendererBegin();
             m_scenesMap[selectedSceneName]->OnRender();
             m_scenesMap[selectedSceneName]->GetEntityManager().DrawEntities();
+
+            m_framebuffer.Unbind();
             Graphics::RendererEnd();
         }
     }

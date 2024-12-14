@@ -2,6 +2,8 @@
 #include "Scenes/PlayScene.h"
 #include "Scenes/TestScene.h"
 #include "Panels/SceneHeirarchyPanel.h"
+#include "Panels/SceneViewportPanel.h"
+
 #include <Luma3D.h>
 
 using namespace Core;
@@ -18,4 +20,5 @@ private:
     TestScene* m_testScene = NULL;
     PlayScene* m_playScene = NULL;
     SceneHeirarchyPanel m_sceneHeirarchyPanel;
+    SceneViewportPanel m_sceneViewportPanel;
 };

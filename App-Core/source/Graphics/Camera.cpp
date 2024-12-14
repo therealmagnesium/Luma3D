@@ -80,19 +80,22 @@ namespace Graphics
 
     void UpdateCameraMatrix(Camera& camera)
     {
-        // Calculate the camera's direction using some trig
-        camera.direction[0] =
-            cos(glm::radians(camera.rotation.x)) * cos(glm::radians(camera.rotation.y));
+        if (!camera.isLocked)
+        {
+            // Calculate the camera's direction using some trig
+            camera.direction[0] =
+                cos(glm::radians(camera.rotation.x)) * cos(glm::radians(camera.rotation.y));
 
-        camera.direction[1] = sin(glm::radians(camera.rotation.y));
+            camera.direction[1] = sin(glm::radians(camera.rotation.y));
 
-        camera.direction[2] =
-            sin(glm::radians(camera.rotation.x)) * cos(glm::radians(camera.rotation.y));
+            camera.direction[2] =
+                sin(glm::radians(camera.rotation.x)) * cos(glm::radians(camera.rotation.y));
 
-        camera.direction = glm::normalize(camera.direction);
+            camera.direction = glm::normalize(camera.direction);
 
-        camera.target = camera.position + camera.direction;
-        camera.view = glm::lookAt(camera.position, camera.target, camera.up);
+            camera.target = camera.position + camera.direction;
+            camera.view = glm::lookAt(camera.position, camera.target, camera.up);
+        }
     }
 
     void LogCameraInfo(const Camera& camera)

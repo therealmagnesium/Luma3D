@@ -24,6 +24,7 @@ void PlayScene::OnCreate()
                                                glm::vec3(0.5f));
     auto& playerMC = m_player->AddComponent<ModelComponent>(cubeModel);
     playerMC.model.materials[0].diffuse = glm::vec3(0.9f, 0.1f, 0.1f);
+    AssetManager::ReplaceModel("Cube", playerMC.model);
 
     m_ground = this->AddEntity("Ground");
     m_ground->AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f),

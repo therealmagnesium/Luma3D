@@ -38,16 +38,24 @@ void SceneHeirarchyPanel::Display()
     ImGui::Begin("Properties Panel");
     {
         if (m_selectionContext != NULL)
+        {
             this->DrawComponents(m_selectionContext);
 
-        if (ImGui::Button("Add Component"))
-            ImGui::OpenPopup("Add Component");
+            if (ImGui::Button("Add Component"))
+                ImGui::OpenPopup("Add Component");
+        }
 
         if (ImGui::BeginPopup("Add Component"))
         {
             if (ImGui::MenuItem("Transform"))
             {
                 m_selectionContext->AddComponent<TransformComponent>();
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::MenuItem("Model"))
+            {
+                m_selectionContext->AddComponent<ModelComponent>();
                 ImGui::CloseCurrentPopup();
             }
 
@@ -137,6 +145,13 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
             if (ImGui::Button("Select Model"))
                 ImGui::OpenPopup("Select Model");
 
+            if (selectedModel == -1)
+            {
+                for (u32 i = 0; i < LEN(names); i++)
+                    if (std::strcmp(names[i], mc.model.name.c_str()) == 0)
+                        selectedModel = i;
+            }
+
             ImGui::SameLine();
             ImGui::Text("%s", (selectedModel == -1) ? "None" : names[selectedModel]);
 
@@ -145,6 +160,7 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
                 for (u32 i = 0; i < LEN(names); i++)
                     if (ImGui::Selectable(names[i]))
                     {
+                        // AssetManager::ReplaceModel(names[selectedModel], mc.model);
                         selectedModel = i;
                         mc.model = AssetManager::GetModel(names[i]);
                     }

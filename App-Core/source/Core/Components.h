@@ -51,7 +51,7 @@ namespace Core
         {
             this->shader = shader;
             this->light = Graphics::CreateDirectionalLight(this->shader, glm::vec3(0.f),
-                                                           glm::vec3(0.8f, 0.8f, 0.6f), 10.f);
+                                                           glm::vec3(0.8f, 0.8f, 0.6f), 20.f);
         }
     };
 

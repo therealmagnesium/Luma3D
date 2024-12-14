@@ -43,6 +43,18 @@ namespace Core
         }
 
         s_models[name] = Graphics::LoadModel(path);
+        s_models[name].name = name;
+    }
+
+    void AssetManager::ReplaceModel(const char* name, Graphics::Model& model)
+    {
+        if (s_models.find(name) == s_models.end())
+        {
+            WARN("Cannot replace model %s from the asset manager because it can't be found!", name);
+            return;
+        }
+
+        s_models[name] = model;
     }
 
     void AssetManager::Clean()

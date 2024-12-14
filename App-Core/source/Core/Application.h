@@ -1,6 +1,8 @@
 #pragma once
 #include "Core/Base.h"
 #include "Core/Scene.h"
+
+#include "Graphics/Framebuffer.h"
 #include "Graphics/Window.h"
 
 #include <string>
@@ -48,6 +50,9 @@ namespace Core
         // [@brief] Get the app's specification.
         inline ApplicationSpecification& GetSpecification() { return m_specification; }
 
+        // [@brief] Get the app's framebuffer.
+        inline Graphics::Framebuffer& GetFramebuffer() { return m_framebuffer; }
+
         // [@brief] Get the app's main window.
         inline Graphics::Window& GetWindow() { return m_window; }
 
@@ -75,8 +80,9 @@ namespace Core
     private:
         bool m_isRunning = false;
         ApplicationSpecification m_specification;
-        std::unordered_map<std::string, Scene*> m_scenesMap;
         Graphics::Window m_window;
+        Graphics::Framebuffer m_framebuffer;
+        std::unordered_map<std::string, Scene*> m_scenesMap;
     };
 
     extern Application* App;

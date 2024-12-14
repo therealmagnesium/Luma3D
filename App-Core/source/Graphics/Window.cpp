@@ -10,6 +10,7 @@
 
 #include <SDL2/SDL.h>
 #include <glad/glad.h>
+#include <glm/gtc/matrix_transform.hpp>
 #include <imgui.h>
 
 namespace Graphics
@@ -123,13 +124,22 @@ namespace Graphics
                     switch (event.window.event)
                     {
                         case SDL_WINDOWEVENT_RESIZED:
+                        {
                             window.width = event.window.data1;
                             window.height = event.window.data2;
+
                             Core::App->GetSpecification().windowWidth = window.width;
                             Core::App->GetSpecification().windowHeight = window.height;
+
+                            float aspectRatio = (float)window.width / (float)window.height;
+                            Renderer.projection =
+                                glm::perspective(glm::radians(45.f), aspectRatio, 0.1f, 1000.f);
+
                             glViewport(0, 0, window.width, window.height);
+
                             INFO("Resized window to %dx%d.", window.width, window.height);
-                            break;
+                        }
+                        break;
 
                         default:
                             break;

@@ -14,6 +14,7 @@ namespace Graphics
         bool isValid = false;
         glm::mat4 transform = glm::mat4(1.f);
         std::string path;
+        std::string name;
         std::vector<Mesh> meshes;
         std::vector<Material> materials;
         std::vector<Texture> loadedTextures;

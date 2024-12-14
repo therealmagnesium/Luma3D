@@ -13,6 +13,7 @@ namespace Core
         static u32 GetModelCount();
 
         static void AddModel(const char* name, const char* path);
+        static void ReplaceModel(const char* name, Graphics::Model& model);
 
         static void Clean();
 
