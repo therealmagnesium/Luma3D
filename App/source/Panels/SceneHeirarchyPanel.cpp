@@ -81,38 +81,6 @@ void SceneHeirarchyPanel::Display()
         if (m_selectionContext != NULL)
         {
             this->DrawComponents(m_selectionContext);
-
-            if (ImGui::Button("Add Component"))
-                ImGui::OpenPopup("Add Component");
-        }
-
-        if (ImGui::BeginPopup("Add Component"))
-        {
-            if (ImGui::MenuItem("Transform"))
-            {
-                m_selectionContext->AddComponent<TransformComponent>();
-                ImGui::CloseCurrentPopup();
-            }
-
-            if (ImGui::MenuItem("Model"))
-            {
-                m_selectionContext->AddComponent<ModelComponent>();
-                ImGui::CloseCurrentPopup();
-            }
-
-            if (ImGui::MenuItem("Camera"))
-            {
-                m_selectionContext->AddComponent<CameraComponent>(false);
-                ImGui::CloseCurrentPopup();
-            }
-
-            if (ImGui::MenuItem("Directional Light"))
-            {
-                m_selectionContext->AddComponent<DirectionalLightComponent>(Renderer.defaultShader);
-                ImGui::CloseCurrentPopup();
-            }
-
-            ImGui::EndPopup();
         }
     }
     ImGui::End();
@@ -157,6 +125,42 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
 
     if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
         entity->SetTag(buffer);
+
+    ImGui::SameLine();
+    ImGui::PushItemWidth(-1.f);
+
+    if (ImGui::Button("Add Component"))
+        ImGui::OpenPopup("Add Component");
+
+    if (ImGui::BeginPopup("Add Component"))
+    {
+        if (ImGui::MenuItem("Transform"))
+        {
+            m_selectionContext->AddComponent<TransformComponent>();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::MenuItem("Model"))
+        {
+            m_selectionContext->AddComponent<ModelComponent>();
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::MenuItem("Camera"))
+        {
+            m_selectionContext->AddComponent<CameraComponent>(false);
+            ImGui::CloseCurrentPopup();
+        }
+
+        if (ImGui::MenuItem("Directional Light"))
+        {
+            m_selectionContext->AddComponent<DirectionalLightComponent>(Renderer.defaultShader);
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+    ImGui::PopItemWidth();
 
     DrawComponent<TransformComponent>("Transform", entity, [&](auto& component) {
         ImGui::DragFloat3("Position", glm::value_ptr(component.position), 0.1f);

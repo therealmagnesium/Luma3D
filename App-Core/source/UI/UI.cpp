@@ -21,6 +21,8 @@ namespace UI
         io.FontDefault = io.Fonts->AddFontFromFileTTF("assets/fonts/rubik/Rubik-Regular.ttf", 18.f);
 
         ImGuiStyle& style = ImGui::GetStyle();
+        style.WindowMinSize.x = 380.f;
+
         style.Colors[ImGuiCol_WindowBg] = ImVec4(0.085f, 0.08f, 0.09f, 1.f);
 
         style.Colors[ImGuiCol_Header] = ImVec4(0.205f, 0.2f, 0.21f, 1.f);
