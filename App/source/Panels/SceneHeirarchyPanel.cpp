@@ -83,7 +83,7 @@ void SceneHeirarchyPanel::DrawEntityNode(std::shared_ptr<Entity>& entity)
 {
     EntityManager& entityManager = m_context->GetEntityManager();
     ImGuiTreeNodeFlags flags = ((entity == m_selectionContext) ? ImGuiTreeNodeFlags_Selected : 0) |
-                               ImGuiTreeNodeFlags_OpenOnArrow;
+                               ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanFullWidth;
     bool isOpen = ImGui::TreeNodeEx((void*)entity->GetID(), flags, "%s", entity->GetTag());
 
     if (ImGui::IsItemClicked())
@@ -114,7 +114,7 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
     memset(buffer, 0, sizeof(buffer));
     strncpy(buffer, entity->GetTag(), sizeof(buffer));
 
-    if (ImGui::InputText("Tag", buffer, sizeof(buffer)))
+    if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
         entity->SetTag(buffer);
 
     if (entity->HasComponent<TransformComponent>())
@@ -144,13 +144,6 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
 
             if (ImGui::Button("Select Model"))
                 ImGui::OpenPopup("Select Model");
-
-            if (selectedModel == -1)
-            {
-                for (u32 i = 0; i < LEN(names); i++)
-                    if (std::strcmp(names[i], mc.model.name.c_str()) == 0)
-                        selectedModel = i;
-            }
 
             ImGui::SameLine();
             ImGui::Text("%s", (selectedModel == -1) ? "None" : names[selectedModel]);

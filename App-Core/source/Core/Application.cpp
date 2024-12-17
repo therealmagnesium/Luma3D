@@ -32,7 +32,8 @@ namespace Core
         m_window = Graphics::CreateWindow(m_specification.windowWidth, m_specification.windowHeight,
                                           m_specification.name.c_str());
 
-        m_framebuffer = Graphics::CreateFramebuffer(1280, 720);
+        m_framebuffer =
+            Graphics::CreateFramebuffer(m_specification.windowWidth, m_specification.windowHeight);
 
         TimeStateInit(60);
         Graphics::RendererInit();

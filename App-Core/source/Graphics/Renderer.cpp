@@ -98,7 +98,7 @@ namespace Graphics
 
     void RendererBegin()
     {
-        Renderer.ClearContext(1);
+        Renderer.ClearContext(2);
         glEnable(GL_DEPTH_TEST);
 
         Window& window = Core::App->GetWindow();

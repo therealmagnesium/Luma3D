@@ -103,8 +103,7 @@ vec3 FresnelSchlick(float cosTheta, vec3 F0)
 vec3 ApplyGammaCoorection(vec3 color)
 {
     vec3 gammaCoorection = vec3(0.f);
-    vec3 hdrColor = color / (color + vec3(1.f));
-    gammaCoorection = pow(hdrColor, vec3(1.f/2.2f));
+    gammaCoorection = pow(color, vec3(1.f/2.2f));
     
     return gammaCoorection;
 }

@@ -38,7 +38,7 @@ namespace Core
         {
             const char* entityTag = entity->GetTag();
             m_entities.push_back(entity);
-            m_entityMap[entityTag].push_back(entity);
+            // m_entityMap[entityTag].push_back(entity);
         }
 
         for (u64 i = 0; i < m_toDestroy.size(); i++)
@@ -46,8 +46,9 @@ namespace Core
             auto& entity = m_toDestroy[i];
 
             m_entities.erase(m_entities.begin() + entity->GetID());
-            m_entityMap[entity->GetTag()].erase(m_entityMap[entity->GetTag()].begin() +
-                                                entity->GetID());
+            /*
+                m_entityMap[entity->GetTag()].erase(m_entityMap[entity->GetTag()].begin() +
+                                                    entity->GetID());*/
         }
 
         for (u64 i = 0; i < m_entities.size(); i++)
@@ -57,7 +58,7 @@ namespace Core
             if (!entity->IsAlive())
             {
                 m_entities.erase(m_entities.begin() + i);
-                m_entityMap[entityTag].erase(m_entityMap[entityTag].begin() + i);
+                // m_entityMap[entityTag].erase(m_entityMap[entityTag].begin() + i);
             }
         }
 

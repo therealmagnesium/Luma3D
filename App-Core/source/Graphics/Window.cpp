@@ -135,8 +135,6 @@ namespace Graphics
                             Renderer.projection =
                                 glm::perspective(glm::radians(45.f), aspectRatio, 0.1f, 1000.f);
 
-                            glViewport(0, 0, window.width, window.height);
-
                             INFO("Resized window to %dx%d.", window.width, window.height);
                         }
                         break;
@@ -156,10 +154,6 @@ namespace Graphics
             INFO("Exiting out of application...");
             Core::App->Quit();
         }
-
-        ImGui::SetMouseCursor(ImGuiMouseCursor_Arrow);
-        if (Core::IsMouseDown(MOUSE_BUTTON_LEFT))
-            ImGui::SetMouseCursor(ImGuiMouseCursor_None);
     }
 
     void DestroyWindow(Window& window)
