@@ -5,6 +5,47 @@
 using namespace Core;
 using namespace Graphics;
 
+template <typename T, typename UIFunc>
+static void DrawComponent(const char* name, std::shared_ptr<Entity>& entity, UIFunc uiFunction)
+{
+    const ImGuiTreeNodeFlags treeNodeFlags =
+        ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed |
+        ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+    if (entity->HasComponent<T>())
+    {
+        auto& component = entity->GetComponent<T>();
+        ImVec2 availableRegion = ImGui::GetContentRegionAvail();
+
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.f, 4.f));
+        float lineHeight = ImGui::GetFont()->FontSize + ImGui::GetStyle().FramePadding.y * 2.f;
+        ImGui::PopStyleVar();
+
+        bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, "%s", name);
+        ImGui::SameLine(availableRegion.x - lineHeight * .5f);
+
+        if (ImGui::Button("+", ImVec2(20.f, 20.f)))
+            ImGui::OpenPopup("Component Settings");
+
+        bool removeComponent = false;
+        if (ImGui::BeginPopup("Component Settings"))
+        {
+            if (ImGui::MenuItem("Remove component"))
+                removeComponent = true;
+
+            ImGui::EndPopup();
+        }
+
+        if (open)
+        {
+            uiFunction(component);
+            ImGui::TreePop();
+        }
+
+        if (removeComponent)
+            entity->RemoveComponent<T>();
+    }
+}
+
 void SceneHeirarchyPanel::SetContext(Scene* scene)
 {
     m_context = scene;
@@ -117,78 +158,44 @@ void SceneHeirarchyPanel::DrawComponents(std::shared_ptr<Entity>& entity)
     if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
         entity->SetTag(buffer);
 
-    if (entity->HasComponent<TransformComponent>())
-    {
-        if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(),
-                              ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
+    DrawComponent<TransformComponent>("Transform", entity, [&](auto& component) {
+        ImGui::DragFloat3("Position", glm::value_ptr(component.position), 0.1f);
+        ImGui::DragFloat3("Rotation", glm::value_ptr(component.rotation), 0.1f);
+        ImGui::DragFloat3("Scale", glm::value_ptr(component.scale), 0.1f);
+    });
+
+    DrawComponent<ModelComponent>("Model", entity, [&](auto& component) {
+        const char* names[AssetManager::GetModelCount()];
+        AssetManager::GetAllModelNames(names);
+
+        if (ImGui::Button("Select Model"))
+            ImGui::OpenPopup("Select Model");
+
+        ImGui::SameLine();
+        ImGui::Text("%s", (component.model.name.empty()) ? "None" : component.model.name.c_str());
+
+        if (ImGui::BeginPopup("Select Model"))
         {
-            auto& tc = entity->GetComponent<TransformComponent>();
-            ImGui::DragFloat3("Position", glm::value_ptr(tc.position), 0.1f);
-            ImGui::DragFloat3("Rotation", glm::value_ptr(tc.rotation), 0.1f);
-            ImGui::DragFloat3("Scale", glm::value_ptr(tc.scale), 0.1f);
+            for (u32 i = 0; i < LEN(names); i++)
+                if (ImGui::Selectable(names[i]))
+                    component.model = AssetManager::GetModel(names[i]);
 
-            ImGui::TreePop();
+            ImGui::EndPopup();
         }
-    }
 
-    if (entity->HasComponent<ModelComponent>())
-    {
-        if (ImGui::TreeNodeEx((void*)typeid(ModelComponent).hash_code(),
-                              ImGuiTreeNodeFlags_DefaultOpen, "Model"))
-        {
-            auto& mc = entity->GetComponent<ModelComponent>();
+        ImGui::ColorEdit3("Tint", glm::value_ptr(component.tint));
+    });
 
-            static s32 selectedModel = -1;
-            const char* names[AssetManager::GetModelCount()];
-            AssetManager::GetAllModelNames(names);
+    DrawComponent<DirectionalLightComponent>("Directional Light", entity, [&](auto& component) {
+        ImGui::DragFloat("Intensity", &component.light.intensity, 0.1f);
+        ImGui::ColorEdit3("Color", glm::value_ptr(component.light.color));
+    });
 
-            if (ImGui::Button("Select Model"))
-                ImGui::OpenPopup("Select Model");
-
-            ImGui::SameLine();
-            ImGui::Text("%s", (selectedModel == -1) ? "None" : names[selectedModel]);
-
-            if (ImGui::BeginPopup("Select Model"))
-            {
-                for (u32 i = 0; i < LEN(names); i++)
-                    if (ImGui::Selectable(names[i]))
-                    {
-                        // AssetManager::ReplaceModel(names[selectedModel], mc.model);
-                        selectedModel = i;
-                        mc.model = AssetManager::GetModel(names[i]);
-                    }
-                ImGui::EndPopup();
-            }
-
-            ImGui::TreePop();
-        }
-    }
-
-    if (entity->HasComponent<DirectionalLightComponent>())
-    {
-        if (ImGui::TreeNodeEx((void*)typeid(DirectionalLightComponent).hash_code(),
-                              ImGuiTreeNodeFlags_DefaultOpen, "Directional Light"))
-        {
-            auto& dlc = entity->GetComponent<DirectionalLightComponent>();
-            ImGui::DragFloat("Intensity", &dlc.light.intensity, 0.1f);
-            ImGui::ColorPicker3("Color", glm::value_ptr(dlc.light.color));
-
-            ImGui::TreePop();
-        }
-    }
-
-    if (entity->HasComponent<CameraComponent>())
-    {
-        if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(),
-                              ImGuiTreeNodeFlags_DefaultOpen, "Camera"))
-        {
-            auto& cc = entity->GetComponent<CameraComponent>();
-            ImGui::Checkbox("Primary?", &cc.isPrimary);
-            ImGui::Checkbox("Locked?", &cc.camera.isLocked);
-            ImGui::DragFloat("Move Speed", &cc.camera.moveSpeed);
-            ImGui::DragFloat("FOV", &cc.camera.fov);
-
-            ImGui::TreePop();
-        }
-    }
+    DrawComponent<CameraComponent>("Camera", entity, [&](auto& component) {
+        ImGui::Checkbox("Primary?", &component.isPrimary);
+        ImGui::Checkbox("Locked?", &component.camera.isLocked);
+        ImGui::DragFloat("Move Speed", &component.camera.moveSpeed);
+        ImGui::DragFloat("FOV", &component.camera.fov);
+        ImGui::ColorEdit3("Clear color", glm::value_ptr(Renderer.clearColor));
+    });
 }

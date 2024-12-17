@@ -187,13 +187,16 @@ namespace Graphics
         shader.Unbind();
     }
 
-    void RenderState::DrawModel(Model& model, Shader& shader)
+    void RenderState::DrawModel(Model& model, Shader& shader, glm::vec3 tint)
     {
         if (model.isValid)
         {
             for (u32 i = 0; i < model.meshes.size(); i++)
+            {
+                model.materials[model.meshes[i].materialIndex].diffuse = tint;
                 this->DrawMesh(model.meshes[i], shader, model.transform,
                                model.materials[model.meshes[i].materialIndex]);
+            }
         }
     }
 

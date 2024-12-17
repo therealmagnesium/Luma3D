@@ -15,6 +15,7 @@ namespace Core
     std::shared_ptr<Entity> EntityManager::AddEntity(const char* tag)
     {
         std::shared_ptr<Entity> entity = std::make_shared<Entity>(m_totalEntities++, tag);
+        entity->AddComponent<TransformComponent>();
         entity->SetActive(true);
         m_toAdd.push_back(entity);
         return entity;
@@ -127,7 +128,8 @@ namespace Core
                 ModelComponent& mc = entity->GetComponent<ModelComponent>();
 
                 if (entity->IsActive())
-                    Graphics::Renderer.DrawModel(mc.model, Graphics::Renderer.defaultShader);
+                    Graphics::Renderer.DrawModel(mc.model, Graphics::Renderer.defaultShader,
+                                                 mc.tint);
             }
         }
     }
@@ -136,9 +138,9 @@ namespace Core
     {
         return m_entities;
     }
+
     EntityVec& EntityManager::GetEntities(const char* tag)
     {
         return m_entityMap[tag];
     }
-
 }

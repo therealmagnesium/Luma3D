@@ -26,8 +26,6 @@ void SceneViewportPanel::Display()
 ImVec2 SceneViewportPanel::GetLargestViewportSize()
 {
     ImVec2 windowSize = ImGui::GetContentRegionAvail();
-    windowSize.x -= ImGui::GetScrollX();
-    windowSize.y -= ImGui::GetScrollY();
 
     float aspectRatio = App->GetWindow().width / (float)App->GetWindow().height;
     ImVec2 aspect = ImVec2(windowSize.x, windowSize.x / aspectRatio);
@@ -44,11 +42,9 @@ ImVec2 SceneViewportPanel::GetLargestViewportSize()
 ImVec2 SceneViewportPanel::GetCenteredViewportPosition(ImVec2 aspectSize)
 {
     ImVec2 windowSize = ImGui::GetContentRegionAvail();
-    windowSize.x -= ImGui::GetScrollX();
-    windowSize.y -= ImGui::GetScrollY();
 
     ImVec2 viewportPosition;
-    viewportPosition.x = (windowSize.x / 2.f) - (aspectSize.x / 2.f);
+    viewportPosition.x = (windowSize.x / 2.f) - (aspectSize.x / 2.f) + 8.f;
     viewportPosition.y = (windowSize.y / 2.f) - (aspectSize.y / 2.f);
 
     return viewportPosition;

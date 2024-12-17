@@ -17,6 +17,4 @@ public:
 private:
     std::shared_ptr<Entity> m_camera;
     std::shared_ptr<Entity> m_directionalLight;
-    std::shared_ptr<Entity> m_player;
-    std::shared_ptr<Entity> m_ground;
 };

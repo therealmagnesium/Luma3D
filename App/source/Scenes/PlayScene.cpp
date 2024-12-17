@@ -18,19 +18,6 @@ void PlayScene::OnCreate()
     m_directionalLight->AddComponent<TransformComponent>(
         glm::vec3(0.f), glm::vec3(-15.f, -30.f, -20.f), glm::vec3(0.f));
     m_directionalLight->AddComponent<DirectionalLightComponent>(Renderer.defaultShader);
-
-    m_player = this->AddEntity("Player");
-    m_player->AddComponent<TransformComponent>(glm::vec3(0.f, 0.4f, 0.f), glm::vec3(0.f),
-                                               glm::vec3(0.5f));
-    auto& playerMC = m_player->AddComponent<ModelComponent>(cubeModel);
-    playerMC.model.materials[0].diffuse = glm::vec3(0.9f, 0.1f, 0.1f);
-    AssetManager::ReplaceModel("Cube", playerMC.model);
-
-    m_ground = this->AddEntity("Ground");
-    m_ground->AddComponent<TransformComponent>(glm::vec3(0.f), glm::vec3(0.f),
-                                               glm::vec3(1.f, 0.5f, 2.f));
-    auto& groundMC = m_ground->AddComponent<ModelComponent>(cubeModel);
-    groundMC.model.materials[0].diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
 }
 
 void PlayScene::OnShutdown()

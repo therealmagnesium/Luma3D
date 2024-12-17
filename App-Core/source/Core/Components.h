@@ -35,6 +35,7 @@ namespace Core
     {
         bool isEnabled = false;
         Graphics::Model model;
+        glm::vec3 tint = glm::vec3(0.8f, 0.8f, 0.8f);
 
         ModelComponent() = default;
         ModelComponent(Graphics::Model& model) { this->model = model; }

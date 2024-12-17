@@ -20,7 +20,7 @@ namespace Graphics
 
         void ClearContext(u32 bufferLevel = 0);
         void DrawMesh(Mesh& mesh, Shader& shader, glm::mat4& transform, Material& material);
-        void DrawModel(Model& model, Shader& shader);
+        void DrawModel(Model& model, Shader& shader, glm::vec3 tint);
         void DrawSkybox(Skybox& skybox, Shader& shader);
     };
 
