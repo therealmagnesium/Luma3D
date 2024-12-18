@@ -42,7 +42,7 @@ namespace Core
         Application(const ApplicationSpecification& appInfo);
 
         // [@brief] Frees memory allocated by initializing the application.
-        ~Application();
+        virtual ~Application();
 
         // [@brief] Returns true if the application is running.
         inline bool IsRunning() const { return m_isRunning; }
@@ -57,7 +57,10 @@ namespace Core
         inline Graphics::Window& GetWindow() { return m_window; }
 
         // [@brief] Returns the currently selected scene.
-        Scene* GetCurrentScene();
+        std::shared_ptr<Scene>& GetActiveScene();
+
+        // [@brief] Sets the given scene to be active.
+        void SetActiveScene(const std::shared_ptr<Scene>& scene);
 
         // [@brief] Start the application, and enter the main game loop.
         void Run();
@@ -65,16 +68,8 @@ namespace Core
         // [@brief] Shutdown the application, and exit the main game loop.
         void Quit();
 
-        // [@brief] Add a scene that can be switched to until it's removed.
-        void AddScene(Scene* scene, const char* name);
-
-        // [@brief] Remove a scene from the application's scene map, frees the scene's memory.
-        void RemoveScene(const char* name);
-
-        // [@brief] The application will switch to the scene mapped with the given name.
-        void SwitchToScene(const char* name);
-
     protected:
+        virtual void OnUpdate() {}
         virtual void OnRenderUI() {}
 
     private:
@@ -82,7 +77,7 @@ namespace Core
         ApplicationSpecification m_specification;
         Graphics::Window m_window;
         Graphics::Framebuffer m_framebuffer;
-        std::unordered_map<std::string, Scene*> m_scenesMap;
+        std::shared_ptr<Scene> m_activeScene;
     };
 
     extern Application* App;

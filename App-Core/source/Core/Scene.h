@@ -13,15 +13,10 @@ namespace Core
         {
             m_entityManager.SetContext(this);
             m_editorCamera =
-                Graphics::CreateCamera(glm::vec3(0.f, 1.f, 5.f), glm::vec3(0.f, 1.f, 0.f), 45.f);
+                Graphics::CreateCamera(glm::vec3(0.f, 2.f, 5.f), glm::vec3(0.f, 1.f, 0.f), 45.f);
             // Graphics::SetPrimaryCamera(&m_editorCamera);
         };
-        virtual ~Scene() {}
-
-        virtual void OnCreate() = 0;
-        virtual void OnUpdate() = 0;
-        virtual void OnRender() {}
-        virtual void OnShutdown() {}
+        ~Scene() {}
 
         inline bool IsActive() const { return m_isActive; }
         inline EntityManager& GetEntityManager() { return m_entityManager; }

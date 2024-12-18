@@ -38,6 +38,34 @@ namespace YAML
             return true;
         }
     };
+
+    template <>
+    struct convert<glm::vec4>
+    {
+        static Node encode(const glm::vec4& v)
+        {
+            Node node;
+            node.push_back(v.x);
+            node.push_back(v.y);
+            node.push_back(v.z);
+            node.push_back(v.w);
+
+            return node;
+        }
+
+        static bool decode(const Node& node, glm::vec4& v)
+        {
+            if (!node.IsSequence() || node.size() != 4)
+                return false;
+
+            v.x = node[0].as<float>();
+            v.y = node[1].as<float>();
+            v.z = node[2].as<float>();
+            v.w = node[3].as<float>();
+
+            return true;
+        }
+    };
 }
 
 namespace Core
@@ -49,6 +77,7 @@ namespace Core
 
         return out;
     }
+
     YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec4& v)
     {
         out << YAML::Flow;
@@ -94,6 +123,7 @@ namespace Core
             out << YAML::EndMap;
 
             out << YAML::Key << "Is Primary?" << YAML::Value << cc.isPrimary;
+            out << YAML::Key << "Clear color" << YAML::Value << Graphics::Renderer.clearColor;
             out << YAML::EndMap;
         }
 
@@ -203,6 +233,7 @@ namespace Core
                     cc.camera.position = transformComponent["Position"].as<glm::vec3>();
                     cc.camera.rotation = transformComponent["Rotation"].as<glm::vec3>();
                     cc.isPrimary = cameraComponent["Is Primary?"].as<bool>();
+                    Graphics::Renderer.clearColor = cameraComponent["Clear color"].as<glm::vec4>();
                 }
 
                 auto directionalLightComponent = entity["Directional Light Component"];

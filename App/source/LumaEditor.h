@@ -1,6 +1,4 @@
 #pragma once
-#include "Scenes/PlayScene.h"
-#include "Scenes/TestScene.h"
 #include "Panels/SceneHeirarchyPanel.h"
 #include "Panels/SceneViewportPanel.h"
 
@@ -14,11 +12,16 @@ class LumaEditor : public Application
 public:
     LumaEditor(const ApplicationSpecification& appInfo);
 
+    void OnUpdate() override;
     void OnRenderUI() override;
 
 private:
-    TestScene* m_testScene = NULL;
-    PlayScene* m_playScene = NULL;
+    void CreateNewScene();
+    void OpenSceneDialog();
+    void SaveSceneDialog();
+
+private:
+    std::shared_ptr<Scene> m_activeScene = NULL;
     SceneHeirarchyPanel m_sceneHeirarchyPanel;
     SceneViewportPanel m_sceneViewportPanel;
     SceneSerializer m_sceneSerializer;

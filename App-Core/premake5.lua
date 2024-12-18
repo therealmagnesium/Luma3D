@@ -19,6 +19,7 @@ includedirs({
 	"../vendor/SDL2/include",
 	"../vendor/glad/include",
 	"../vendor/imgui/include",
+	"../vendor/nfd/include",
 	"../vendor/stb_image/include",
 	"../vendor/yaml-cpp/include",
 })
@@ -27,6 +28,7 @@ libdirs({
 	"../vendor/SDL2/lib",
 	"../vendor/glad/lib",
 	"../vendor/imgui/lib",
+	"../vendor/nfd/lib",
 	"../vendor/stb_image/lib",
 	"../vendor/yaml-cpp/lib",
 })
@@ -36,6 +38,9 @@ links({
 	"glad",
 	"imgui",
 	"stb_image",
+	"nfd",
+	"gtk-3",
+	"glib-2.0",
 	"assimp",
 	"yaml-cpp",
 })

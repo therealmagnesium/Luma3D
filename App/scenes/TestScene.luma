@@ -3,18 +3,18 @@ Entities:
   - Entity: 12837192873
     Tag: Main Camera
     Transform Component:
-      Position: [4, 3, 25.9]
-      Rotation: [-120, -17.5, 0]
+      Position: [0.4, 0.9, 25.9]
+      Rotation: [-88.6, -6.6, 0]
       Scale: [1, 1, 1]
     Camera Component:
       Camera:
         FOV: 45
         Move speed: 8
-        Target: [3.5231414, 2.699294, 25.074057]
-        Direction: [-0.47685853, -0.3007058, -0.82594305]
+        Target: [0.4242703, 0.7850628, 24.906923]
+        Direction: [0.024270296, -0.114937164, -0.9930763]
         Up: [0, 1, 0]
       Is Primary?: true
-      Clear color: [0.2, 0.2, 0.2, 1]
+      Clear color: [0.1855965, 0.57915056, 0.574592, 1]
   - Entity: 12837192873
     Tag: Directional Light
     Transform Component:
@@ -30,7 +30,7 @@ Entities:
     Transform Component:
       Position: [0, 0, 0]
       Rotation: [0, 0, 0]
-      Scale: [1, 0.5, 5]
+      Scale: [1.2, 0.5, 5]
     Model Component:
       Name: Cube
       Tint: [0.8185328, 0.8185328, 0.8185328]
@@ -42,4 +42,4 @@ Entities:
       Scale: [0.5, 0.5, 0.5]
     Model Component:
       Name: Cube
-      Tint: [0.76061773, 0.25843382, 0.25843382]
+      Tint: [0.25843382, 0.33599117, 0.76061773]

@@ -5,6 +5,7 @@
 #include "Core/Components.h"
 #include "Core/Entity.h"
 #include "Core/EntityManager.h"
+#include "Core/FileDialogs.h"
 #include "Core/Input.h"
 #include "Core/IO.h"
 #include "Core/KeyCodes.h"
