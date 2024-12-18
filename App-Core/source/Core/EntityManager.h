@@ -20,6 +20,7 @@ namespace Core
         EntityManager() = default;
         std::shared_ptr<Entity> AddEntity(const char* tag);
         void DestroyEntity(std::shared_ptr<Entity>& entity);
+        void Flush();
         void Update();
         void DrawEntities();
 

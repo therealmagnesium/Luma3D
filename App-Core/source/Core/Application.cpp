@@ -109,6 +109,7 @@ namespace Core
 
     void Application::Quit()
     {
+        INFO("Exiting out of the application...");
         m_isRunning = false;
     }
 
@@ -136,7 +137,9 @@ namespace Core
         }
 
         m_scenesMap[name]->OnCreate();
+        m_scenesMap[name]->GetEntityManager().Flush();
         selectedSceneName = name;
+
         INFO("Successfully switched to scene '%s'!", name);
     }
 

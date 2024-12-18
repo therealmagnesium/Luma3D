@@ -21,4 +21,5 @@ private:
     PlayScene* m_playScene = NULL;
     SceneHeirarchyPanel m_sceneHeirarchyPanel;
     SceneViewportPanel m_sceneViewportPanel;
+    SceneSerializer m_sceneSerializer;
 };

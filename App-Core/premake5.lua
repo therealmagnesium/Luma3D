@@ -20,6 +20,7 @@ includedirs({
 	"../vendor/glad/include",
 	"../vendor/imgui/include",
 	"../vendor/stb_image/include",
+	"../vendor/yaml-cpp/include",
 })
 
 libdirs({
@@ -27,6 +28,7 @@ libdirs({
 	"../vendor/glad/lib",
 	"../vendor/imgui/lib",
 	"../vendor/stb_image/lib",
+	"../vendor/yaml-cpp/lib",
 })
 
 links({
@@ -35,6 +37,7 @@ links({
 	"imgui",
 	"stb_image",
 	"assimp",
+	"yaml-cpp",
 })
 
 filter("system:Unix")

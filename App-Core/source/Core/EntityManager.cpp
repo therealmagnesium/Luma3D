@@ -31,10 +31,8 @@ namespace Core
         m_toDestroy.push_back(entity);
     }
 
-    void EntityManager::Update()
+    void EntityManager::Flush()
     {
-        assert(m_context != NULL);
-
         for (auto& entity : m_toAdd)
         {
             const char* entityTag = entity->GetTag();
@@ -62,6 +60,12 @@ namespace Core
                 // m_entityMap[entityTag].erase(m_entityMap[entityTag].begin() + i);
             }
         }
+    }
+    void EntityManager::Update()
+    {
+        assert(m_context != NULL);
+
+        this->Flush();
 
         m_toAdd.clear();
         m_toDestroy.clear();

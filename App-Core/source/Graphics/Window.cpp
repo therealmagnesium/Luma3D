@@ -148,12 +148,6 @@ namespace Graphics
                     break;
             }
         }
-
-        if (Core::IsKeyDown(KEY_ESCAPE))
-        {
-            INFO("Exiting out of application...");
-            Core::App->Quit();
-        }
     }
 
     void DestroyWindow(Window& window)

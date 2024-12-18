@@ -24,6 +24,7 @@ namespace UI
         style.WindowMinSize.x = 380.f;
 
         style.Colors[ImGuiCol_WindowBg] = ImVec4(0.085f, 0.08f, 0.09f, 1.f);
+        style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.085f, 0.08f, 0.09f, 1.f);
 
         style.Colors[ImGuiCol_Header] = ImVec4(0.205f, 0.2f, 0.21f, 1.f);
         style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.305f, 0.3f, 0.31f, 1.f);

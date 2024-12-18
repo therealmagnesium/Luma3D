@@ -18,7 +18,6 @@ namespace Graphics
         camera.fov = fov;
 
         camera.direction = camera.target - camera.position;
-        camera.direction = glm::normalize(camera.direction);
 
         return camera;
     }
